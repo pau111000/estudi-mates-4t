@@ -1,459 +1,840 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tema 6: Funcions — Estudi Interactiu</title>
+<title>Tema 6: Funciones — Tu guía para
+
+ entenderlas</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0f0a1e;--card:#1a1333;--accent:#c084fc;--accent2:#818cf8;
-  --pink:#f472b6;--green:#34d399;--red:#fb7185;--orange:#fbbf24;
-  --text:#e2e8f0;--dim:#94a3b8;--border:#2d2654;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #faf5ff;
+  --card: #ffffff;
+  --text: #2d2640;
+  --muted: #6b5f7d;
+  --pink: #e91e8c;
+  --purple: #8b5cf6;
+  --blue: #3b82f6;
+  --green: #10b981;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --light-pink: #fdf2f8;
+  --light-purple: #f5f3ff;
+  --light-blue: #eff6ff;
+  --light-green: #ecfdf5;
+  --light-orange: #fffbeb;
+  --border: #e9e0f5;
+  --shadow: 0 4px 20px rgba(139,92,246,0.08);
+  --shadow-hover: 0 8px 30px rgba(139,92,246,0.15);
+  --radius: 16px;
 }
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.star-dot{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--dur,3s) ease-in-out infinite alternate;opacity:0.3}
-@keyframes twinkle{0%{opacity:0.2;transform:scale(0.8)}100%{opacity:0.8;transform:scale(1.2)}}
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #f59e0b);
+  padding: 30px 20px;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  animation: shimmer 6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(20px, 10px); }
+}
+.header h1 { font-size: 2em; font-weight: 800; position: relative; }
+.header p { font-size: 1.1em; opacity: 0.95; margin-top: 6px; position: relative; font-weight: 600; }
 
-.app{max-width:900px;margin:0 auto;padding:20px;position:relative;z-index:1}
+/* ===== NAVIGATION ===== */
+.nav {
+  display: flex;
+  gap: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-btn {
+  padding: 10px 18px;
+  border: 2px solid var(--border);
+  border-radius: 25px;
+  background: white;
+  font-family: inherit;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.nav-btn:hover { border-color: var(--purple); color: var(--purple); }
+.nav-btn.active {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(139,92,246,0.3);
+}
 
-/* Header */
-.header{text-align:center;padding:40px 20px 30px}
-.header-icon{font-size:56px;margin-bottom:10px;display:block}
-.header h1{font-size:2.2em;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
-.header p{color:var(--dim);font-size:1.1em}
+/* ===== MAIN CONTAINER ===== */
+.container { max-width: 800px; margin: 0 auto; padding: 20px; }
+.section { display: none; }
+.section.active { display: block; }
 
-/* Alert Banner */
-.alert-banner{background:linear-gradient(135deg,rgba(244,114,182,0.15),rgba(192,132,252,0.15));border:1px solid rgba(244,114,182,0.3);border-radius:16px;padding:16px 24px;margin:0 0 30px;display:flex;align-items:center;gap:12px}
-.alert-banner .icon{font-size:1.5em}
-.alert-banner .text{font-size:0.95em;line-height:1.5}
-.alert-banner strong{color:var(--pink)}
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+.card:hover { box-shadow: var(--shadow-hover); }
+.card h3 {
+  font-size: 1.2em;
+  font-weight: 800;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-/* Navigation */
-.nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:30px;position:sticky;top:0;z-index:10;background:rgba(15,10,30,0.95);backdrop-filter:blur(10px);padding:12px 0;border-radius:0 0 16px 16px}
-.nav-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;font-size:0.85em;transition:all 0.3s}
-.nav-btn:hover,.nav-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* ===== COLORED BOXES ===== */
+.box-pink { background: var(--light-pink); border-left: 4px solid var(--pink); padding: 16px; border-radius: 0 12px 12px 0; margin: 12px 0; }
+.box-purple { background: var(--light-purple); border-left: 4px solid var(--purple); padding: 16px; border-radius: 0 12px 12px 0; margin: 12px 0; }
+.box-blue { background: var(--light-blue); border-left: 4px solid var(--blue); padding: 16px; border-radius: 0 12px 12px 0; margin: 12px 0; }
+.box-green { background: var(--light-green); border-left: 4px solid var(--green); padding: 16px; border-radius: 0 12px 12px 0; margin: 12px 0; }
+.box-orange { background: var(--light-orange); border-left: 4px solid var(--orange); padding: 16px; border-radius: 0 12px 12px 0; margin: 12px 0; }
 
-/* Sections */
-.section{display:none;animation:fadeIn 0.4s}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.definition {
+  background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+  border: 2px solid var(--purple);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+  position: relative;
+}
+.definition::before {
+  content: '📌 Definición';
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background: var(--purple);
+  color: white;
+  font-size: 0.75em;
+  font-weight: 800;
+  padding: 2px 12px;
+  border-radius: 20px;
+}
 
-.section-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.section-title .icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3em}
-.section-title h2{font-size:1.4em}
+.ejemplo {
+  background: linear-gradient(135deg, #ecfdf5, #eff6ff);
+  border: 2px dashed var(--green);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+  position: relative;
+}
+.ejemplo::before {
+  content: '✏️ Ejemplo resuelto';
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background: var(--green);
+  color: white;
+  font-size: 0.75em;
+  font-weight: 800;
+  padding: 2px 12px;
+  border-radius: 20px;
+}
 
-/* Theory Cards */
-.theory-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-.theory-card h3{color:var(--accent);margin-bottom:12px;font-size:1.15em;display:flex;align-items:center;gap:8px}
-.theory-card p,.theory-card li{line-height:1.7;color:var(--dim);font-size:0.95em}
-.theory-card p{margin-bottom:8px}
-.theory-card ul{list-style:none;padding-left:0}
-.theory-card li::before{content:'▸ ';color:var(--accent)}
-.theory-card .formula{background:rgba(192,132,252,0.1);border:1px solid rgba(192,132,252,0.2);border-radius:10px;padding:12px 16px;margin:10px 0;font-family:'Courier New',monospace;font-size:0.95em;color:var(--accent);text-align:center}
-.theory-card .example{background:rgba(52,211,153,0.08);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin:10px 0;font-size:0.9em;color:var(--dim)}
-.theory-card .example strong{color:var(--green)}
-.theory-card .es-note{font-size:0.85em;color:var(--pink);font-style:italic;margin-top:6px}
+.truco {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border: 2px solid var(--orange);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+  position: relative;
+}
+.truco::before {
+  content: '💡 Truco';
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background: var(--orange);
+  color: white;
+  font-size: 0.75em;
+  font-weight: 800;
+  padding: 2px 12px;
+  border-radius: 20px;
+}
 
-/* Interval visual */
-.interval-visual{display:flex;align-items:center;justify-content:center;gap:6px;margin:15px 0;flex-wrap:wrap}
-.iv-item{display:flex;flex-direction:column;align-items:center;gap:4px}
-.iv-line{width:80px;height:4px;background:var(--accent);border-radius:2px;position:relative}
-.iv-line .dot{width:10px;height:10px;border-radius:50%;position:absolute;top:-3px}
-.iv-line .dot.open{border:2px solid var(--accent);background:var(--bg)}
-.iv-line .dot.closed{background:var(--accent)}
-.iv-line .dot.left{left:-5px}
-.iv-line .dot.right{right:-5px}
-.iv-label{font-size:0.75em;color:var(--dim)}
+.paso {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+  align-items: flex-start;
+}
+.paso-num {
+  min-width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  font-weight: 800;
+  font-size: 0.85em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-/* Quiz */
-.quiz-container{margin-top:20px}
-.quiz-progress{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.progress-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--pink));transition:width 0.4s;border-radius:4px}
-.progress-text{font-size:0.85em;color:var(--dim)}
+.formula-box {
+  background: var(--text);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 1.1em;
+  text-align: center;
+  margin: 12px 0;
+  font-weight: 700;
+}
 
-.question-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-.q-number{font-size:0.8em;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
-.q-text{font-size:1.05em;margin-bottom:16px;line-height:1.6}
-.q-text .fn{font-family:'Courier New',monospace;color:var(--orange);font-size:1.05em}
-.q-hint{font-size:0.85em;color:var(--dim);font-style:italic;margin-bottom:12px}
+/* ===== SUB TABS ===== */
+.sub-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.sub-tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: white;
+  font-family: inherit;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.sub-tab:hover { border-color: var(--pink); color: var(--pink); }
+.sub-tab.active { background: var(--pink); color: white; border-color: var(--pink); }
+.sub-content { display: none; }
+.sub-content.active { display: block; }
 
-.options{display:flex;flex-direction:column;gap:8px}
-.option{padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:rgba(26,19,51,0.5);cursor:pointer;transition:all 0.3s;font-size:0.95em;display:flex;align-items:center;gap:10px}
-.option:hover:not(.disabled){border-color:var(--accent);background:rgba(192,132,252,0.08)}
-.option.selected{border-color:var(--accent);background:rgba(192,132,252,0.15)}
-.option.correct{border-color:var(--green)!important;background:rgba(52,211,153,0.15)!important}
-.option.wrong{border-color:var(--red)!important;background:rgba(251,113,133,0.15)!important}
-.option .letter{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:600;flex-shrink:0}
-.option.correct .letter{background:var(--green);color:#fff;border-color:var(--green)}
-.option.wrong .letter{background:var(--red);color:#fff;border-color:var(--red)}
-.option.disabled{pointer-events:none;opacity:0.7}
+/* ===== SECTION TITLES ===== */
+.sec-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.sec-title .icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8em;
+  margin: 0 auto 12px;
+  color: white;
+}
+.sec-title h2 { font-size: 1.5em; font-weight: 800; }
+.sec-title p { color: var(--muted); font-size: 0.95em; margin-top: 4px; }
 
-.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:0.9em;display:none;line-height:1.6}
-.feedback.show{display:block;animation:fadeIn 0.3s}
-.feedback.correct{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:var(--green)}
-.feedback.wrong{background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);color:var(--red)}
+/* ===== QUIZ ===== */
+.quiz-container {}
+.quiz-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.progress-bar { flex: 1; height: 8px; background: var(--border); border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--pink)); border-radius: 10px; transition: width 0.5s; }
+.progress-text { font-weight: 800; font-size: 0.85em; color: var(--muted); }
 
-.input-answer{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.input-answer input{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:rgba(26,19,51,0.5);color:var(--text);font-size:0.95em;font-family:'Courier New',monospace;width:260px}
-.input-answer input:focus{outline:none;border-color:var(--accent)}
+.question-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.q-number {
+  font-size: 0.75em;
+  font-weight: 800;
+  color: var(--pink);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.q-text { font-size: 1.05em; font-weight: 700; margin-bottom: 16px; line-height: 1.6; }
+.q-hint {
+  background: var(--light-orange);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  margin-bottom: 16px;
+  color: #92400e;
+}
+.fn { color: var(--purple); font-weight: 800; }
 
-.btn{padding:10px 20px;border-radius:10px;border:none;font-size:0.9em;cursor:pointer;transition:all 0.3s;font-weight:600}
-.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(192,132,252,0.3)}
-.btn-secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}
-.btn-secondary:hover{border-color:var(--accent)}
-.btn-next{margin-top:12px}
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.option:hover { border-color: var(--purple); background: var(--light-purple); }
+.option .letter {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--light-purple);
+  color: var(--purple);
+  font-weight: 800;
+  font-size: 0.85em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.option.correct { border-color: var(--green); background: var(--light-green); }
+.option.correct .letter { background: var(--green); color: white; }
+.option.wrong { border-color: var(--red); background: #fef2f2; }
+.option.wrong .letter { background: var(--red); color: white; }
+.option.disabled { pointer-events: none; opacity: 0.7; }
+.option.correct.disabled { opacity: 1; }
 
-/* Score */
-.score-card{background:linear-gradient(135deg,rgba(192,132,252,0.15),rgba(129,140,248,0.15));border:1px solid rgba(192,132,252,0.3);border-radius:20px;padding:32px;text-align:center;margin-top:20px}
-.score-emoji{font-size:3em;margin-bottom:10px}
-.score-text{font-size:1.8em;font-weight:700;margin-bottom:6px}
-.score-sub{color:var(--dim);margin-bottom:16px}
+.feedback {
+  display: none;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+.feedback.show { display: block; }
+.feedback.correct { background: var(--light-green); color: #065f46; border: 1px solid #6ee7b7; }
+.feedback.wrong { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
 
-/* Graph canvas */
-.graph-container{background:rgba(15,10,30,0.8);border:1px solid var(--border);border-radius:12px;padding:10px;margin:12px 0;text-align:center;overflow-x:auto}
-canvas.graph{background:#0d0820;border-radius:8px}
+.btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 25px;
+  font-family: inherit;
+  font-size: 0.95em;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  box-shadow: 0 4px 15px rgba(139,92,246,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,92,246,0.4); }
+.btn-next { margin-top: 16px; }
 
-/* Disc type visual */
-.disc-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
-.disc-type{background:rgba(26,19,51,0.8);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
-.disc-type .emoji{font-size:2em;margin-bottom:8px}
-.disc-type h4{color:var(--accent);font-size:0.95em;margin-bottom:6px}
-.disc-type p{font-size:0.8em;color:var(--dim);line-height:1.5}
+.score-card {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.score-emoji { font-size: 4em; margin-bottom: 12px; }
+.score-text { font-size: 2.5em; font-weight: 800; background: linear-gradient(135deg, var(--purple), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.score-sub { color: var(--muted); font-weight: 700; font-size: 1.1em; margin: 8px 0 20px; }
 
-/* Match exercise */
-.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-.match-item{padding:12px;border-radius:10px;border:2px solid var(--border);cursor:pointer;text-align:center;transition:all 0.3s;font-size:0.9em}
-.match-item:hover{border-color:var(--accent)}
-.match-item.selected{border-color:var(--accent);background:rgba(192,132,252,0.1)}
-.match-item.matched{border-color:var(--green);background:rgba(52,211,153,0.1);pointer-events:none}
-.match-item.wrong-match{border-color:var(--red);animation:shake 0.4s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+/* ===== GRAPH VISUAL ===== */
+.graph-visual {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  text-align: center;
+  font-family: monospace;
+  font-size: 0.85em;
+  line-height: 1.4;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--text);
+}
 
-/* Tabs within section */
-.sub-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.sub-tab{padding:6px 14px;border-radius:16px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-size:0.8em;transition:all 0.3s}
-.sub-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--muted);
+  font-weight: 600;
+}
 
-.footer{text-align:center;padding:30px;color:var(--dim);font-size:0.85em;margin-top:20px}
-
-@media(max-width:600px){
-  .header h1{font-size:1.6em}
-  .nav{gap:6px}
-  .nav-btn{font-size:0.75em;padding:6px 12px}
-  .question-card{padding:16px}
-  .theory-card{padding:16px}
-  .match-grid{grid-template-columns:1fr}
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.5em; }
+  .nav { padding: 12px; }
+  .nav-btn { padding: 8px 14px; font-size: 0.8em; }
+  .card { padding: 18px; }
+  .container { padding: 12px; }
 }
 </style>
 </head>
 <body>
-<div id="starsContainer" class="stars"></div>
 
-<div class="app">
-  <div class="header">
-    <span class="header-icon">📐</span>
-    <h1>Tema 6: Funcions</h1>
-    <p>El teu espai d'estudi interactiu — Tu espacio de estudio interactivo</p>
+<div class="header">
+  <h1>Tema 6: Funciones</h1>
+  <p>Tu guia paso a paso para entenderlas de verdad</p>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" data-section="teoria">📖 Teoria</button>
+  <button class="nav-btn" data-section="dominio">🎯 Dominio</button>
+  <button class="nav-btn" data-section="continuidad">〰️ Continuidad</button>
+  <button class="nav-btn" data-section="monotonia">📈 Sube y Baja</button>
+  <button class="nav-btn" data-section="analisis">🔍 Analisis</button>
+  <button class="nav-btn" data-section="examen">🧪 Examen</button>
+</nav>
+
+<div class="container">
+
+<!-- ==================== TEORIA ==================== -->
+<div class="section active" id="sec-teoria">
+  <div class="sec-title">
+    <div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">📖</div>
+    <h2>Teoria explicada facilito</h2>
+    <p>Cada concepto con palabras sencillas y ejemplos visuales</p>
   </div>
 
-  <div class="alert-banner">
-    <span class="icon">📝</span>
-    <div class="text"><strong>Matemàtiques 4t ESO</strong> — Repassa la teoria i practica amb exercicis interactius. Cada secció té explicacions + preguntes!</div>
+  <div class="sub-tabs" id="theoryTabs">
+    <button class="sub-tab active" data-topic="intro">Que es una funcion</button>
+    <button class="sub-tab" data-topic="dominio">Dominio</button>
+    <button class="sub-tab" data-topic="cont">Continuidad</button>
+    <button class="sub-tab" data-topic="disc">Discontinuidades</button>
+    <button class="sub-tab" data-topic="mono">Crece / Decrece</button>
+    <button class="sub-tab" data-topic="extremos">Max y Min</button>
+    <button class="sub-tab" data-topic="recorrido">Recorrido</button>
+    <button class="sub-tab" data-topic="cortes">Cortes con ejes</button>
+    <button class="sub-tab" data-topic="intervalos">Intervalos</button>
   </div>
 
-  <div class="nav" id="nav">
-    <button class="nav-btn active" data-section="teoria">📖 Teoria</button>
-    <button class="nav-btn" data-section="domini">🎯 Domini</button>
-    <button class="nav-btn" data-section="continuitat">〰️ Continuïtat</button>
-    <button class="nav-btn" data-section="monotonia">📈 Monotonia</button>
-    <button class="nav-btn" data-section="analisi">🔍 Anàlisi</button>
-    <button class="nav-btn" data-section="examen">🧪 Examen</button>
+  <!-- INTRO -->
+  <div class="sub-content active" id="topic-intro">
+    <div class="card">
+      <h3>🤔 Que es una funcion?</h3>
+      <p>Imagina una <strong>maquina</strong>: tu le metes un numero (llamado <strong>x</strong>) y la maquina te devuelve otro numero (llamado <strong>y</strong>).</p>
+      <div class="box-pink">
+        <strong>Ejemplo de la vida real:</strong> Un termometro es como una funcion. Le "metes" una hora del dia (x = las 3 de la tarde) y te "devuelve" una temperatura (y = 28 grados). A cada hora le corresponde UNA temperatura.
+      </div>
+      <div class="definition">
+        <br>Una <strong>funcion</strong> es una relacion que a cada valor de x le asigna <strong>un unico</strong> valor de y. Se escribe asi: <strong>y = f(x)</strong>, que se lee "y igual a f de x".
+      </div>
+      <p style="margin-top:12px">Cuando dibujamos todos esos puntos (x, y) en unos ejes, obtenemos una <strong>grafica</strong>. Y de esa grafica podemos sacar un monton de informacion!</p>
+      <div class="truco">
+        <br>Cuando veas <strong>f(x)</strong> piensa: "le meto x a la maquina y me sale esto". Por ejemplo, si f(x) = x + 3, y meto x = 2, sale f(2) = 2 + 3 = 5.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Que vamos a estudiar de cada funcion?</h3>
+      <p>Cuando nos dan la grafica de una funcion, tenemos que analizar estas cosas:</p>
+      <div class="box-purple"><strong>1. Dominio</strong> → En que valores de x existe la funcion (donde "vive" la grafica)</div>
+      <div class="box-blue"><strong>2. Recorrido</strong> → Que valores de y toma la funcion (hasta donde llega de alto/bajo)</div>
+      <div class="box-green"><strong>3. Cortes con ejes</strong> → Donde la grafica toca el eje X y el eje Y</div>
+      <div class="box-orange"><strong>4. Continuidad</strong> → Si la grafica se puede dibujar sin levantar el lapiz</div>
+      <div class="box-pink"><strong>5. Crecimiento/Decrecimiento</strong> → Donde sube y donde baja</div>
+      <div class="box-purple"><strong>6. Maximos y Minimos</strong> → Los puntos mas altos (cimas) y mas bajos (valles)</div>
+    </div>
   </div>
 
-  <!-- ========== TEORIA ========== -->
-  <div class="section active" id="sec-teoria">
-    <div class="section-title">
-      <div class="icon" style="background:linear-gradient(135deg,#c084fc,#818cf8)">📖</div>
-      <h2>Resum Teòric</h2>
-    </div>
-
-    <div class="sub-tabs" id="theoryTabs">
-      <button class="sub-tab active" data-topic="def">Definició</button>
-      <button class="sub-tab" data-topic="dom">Domini</button>
-      <button class="sub-tab" data-topic="cont">Continuïtat</button>
-      <button class="sub-tab" data-topic="disc">Discontinuïtats</button>
-      <button class="sub-tab" data-topic="mono">Monotonia</button>
-      <button class="sub-tab" data-topic="extrems">Extrems</button>
-      <button class="sub-tab" data-topic="intervals">Intervals</button>
-    </div>
-
-    <!-- Definició -->
-    <div class="theory-topic" id="topic-def">
-      <div class="theory-card">
-        <h3>📌 Què és una funció?</h3>
-        <p>Una <strong style="color:var(--accent)">funció</strong> és una correspondència (o aplicació) que assigna a cada valor de la variable independent <strong>x</strong> un únic valor de la variable dependent <strong>y</strong>.</p>
-        <div class="formula">f: x → y = f(x)</div>
-        <p>Es pot representar mitjançant: una <strong>fórmula</strong>, una <strong>taula de valors</strong> o una <strong>gràfica</strong>.</p>
-        <div class="es-note">🇪🇸 Una función asigna a cada valor de x un único valor de y.</div>
+  <!-- DOMINIO -->
+  <div class="sub-content" id="topic-dominio">
+    <div class="card">
+      <h3>🎯 Dominio - Donde "vive" la funcion</h3>
+      <div class="definition">
+        <br>El <strong>dominio</strong> son todos los valores de <strong>x</strong> donde la funcion existe y tiene sentido. Dicho facil: si miras la grafica de izquierda a derecha, <strong>el dominio es todo el trozo del eje X que la grafica cubre</strong>.
       </div>
-
-      <div class="theory-card">
-        <h3>📋 Característiques d'una funció</h3>
-        <p>Quan analitzem una funció, estudiem:</p>
-        <ul>
-          <li><strong style="color:var(--accent)">Domini</strong> → interval (on existeix la funció)</li>
-          <li><strong style="color:var(--accent)">Recorregut</strong> → interval (valors que pren y)</li>
-          <li><strong style="color:var(--accent)">Punts de tall</strong> → punts (on talla els eixos)</li>
-          <li><strong style="color:var(--accent)">Continuïtat / Discontinuïtat</strong> → interval</li>
-          <li><strong style="color:var(--accent)">Creixement / Decreixement</strong> → interval</li>
-          <li><strong style="color:var(--accent)">Màxims / Mínims</strong> → punts</li>
-          <li><strong style="color:var(--accent)">Curvatura</strong> → interval</li>
-          <li><strong style="color:var(--accent)">Punt d'inflexió (PI)</strong> → punt</li>
-        </ul>
-        <div class="es-note">🇪🇸 Estas son todas las propiedades que analizamos al estudiar una función.</div>
+      <div class="box-pink">
+        <strong>Piensalo asi:</strong> Imagina que la grafica es un camino. El dominio es la parte del suelo (eje X) por donde pasa ese camino. Si hay un hueco en el camino, ese punto NO esta en el dominio.
       </div>
     </div>
 
-    <!-- Domini -->
-    <div class="theory-topic" id="topic-dom" style="display:none">
-      <div class="theory-card">
-        <h3>🎯 Domini de definició</h3>
-        <p>El <strong style="color:var(--accent)">domini</strong> d'una funció és el conjunt de punts on la funció existeix i té sentit.</p>
-        <div class="es-note">🇪🇸 El dominio es el conjunto de valores de x donde la función existe y tiene sentido.</div>
-      </div>
-      <div class="theory-card">
-        <h3>📐 Polinomis</h3>
-        <p>El domini és <strong>tot ℝ</strong> (tots els nombres reals).</p>
-        <div class="example"><strong>Exemple:</strong> f(x) = x² → Dom f(x) = ℝ = (-∞, +∞)</div>
-        <div class="es-note">🇪🇸 Los polinomios siempre tienen dominio ℝ.</div>
-      </div>
-      <div class="theory-card">
-        <h3>√ Radicals</h3>
-        <p>El que hi ha dins l'arrel ha de ser <strong>≥ 0</strong>.</p>
-        <div class="formula">f(x) = √g(x) → cal que g(x) ≥ 0</div>
-        <div class="example"><strong>Exemple:</strong> f(x) = √x → Dom f(x) = [0, +∞)<br><strong>Exemple:</strong> f(x) = √(x−2) → x−2 ≥ 0 → x ≥ 2 → Dom f(x) = [2, +∞)</div>
-        <div class="es-note">🇪🇸 Lo que está dentro de la raíz debe ser ≥ 0.</div>
-      </div>
-      <div class="theory-card">
-        <h3>➗ Racionals (fraccions)</h3>
-        <p>El <strong>denominador no pot ser zero</strong>. Cal trobar els valors que anul·len el denominador i excloure'ls.</p>
-        <div class="formula">f(x) = P(x)/Q(x) → cal que Q(x) ≠ 0</div>
-        <div class="example"><strong>Exemple:</strong> f(x) = 1/(x+3) → x+3=0 → x=−3<br>Dom f(x) = ℝ − {−3} = (−∞,−3) ∪ (−3,+∞)</div>
-        <div class="example"><strong>Exemple:</strong> f(x) = (2x+6)/(x²−3x+2) → x²−3x+2=0 → x=1, x=2<br>Dom f(x) = (−∞,1) ∪ (1,2) ∪ (2,+∞)</div>
-        <div class="es-note">🇪🇸 El denominador no puede ser cero. Encuentra los valores que lo anulan y exclúyelos.</div>
+    <div class="card">
+      <h3>📐 Polinomios (x², x³, 2x + 3...)</h3>
+      <p>Los polinomios son las funciones mas simples. Su dominio es <strong>SIEMPRE todos los numeros reales</strong>. No hay ninguna x que les cause problemas.</p>
+      <div class="formula-box">Si f(x) es un polinomio → Dominio = todos los reales = (-∞, +∞)</div>
+      <div class="ejemplo">
+        <br><strong>f(x) = x² + 3x - 5</strong><br>
+        Como es un polinomio (solo tiene sumas, restas y potencias de x), puedes meter CUALQUIER numero. Dom = (-∞, +∞)
       </div>
     </div>
 
-    <!-- Continuïtat -->
-    <div class="theory-topic" id="topic-cont" style="display:none">
-      <div class="theory-card">
-        <h3>〰️ Continuïtat</h3>
-        <p>Una funció és <strong style="color:var(--green)">contínua</strong> si la pots dibuixar <strong>sense aixecar el llapis del paper</strong>.</p>
-        <p>Si has d'aixecar el llapis, la funció té una <strong style="color:var(--red)">discontinuïtat</strong> en aquell punt.</p>
-        <div class="es-note">🇪🇸 Una función es continua si puedes dibujarla sin levantar el lápiz del papel.</div>
+    <div class="card">
+      <h3>√ Raices cuadradas</h3>
+      <p>Aqui hay una regla importante: <strong>lo que hay dentro de la raiz NO puede ser negativo</strong> (no puedes sacar la raiz cuadrada de un numero negativo).</p>
+      <div class="formula-box">f(x) = √g(x) → Necesitas que g(x) ≥ 0</div>
+      <div class="ejemplo">
+        <br><strong>f(x) = √(x - 4)</strong><br><br>
+        <div class="paso"><div class="paso-num">1</div><div>Lo de dentro de la raiz es: x - 4</div></div>
+        <div class="paso"><div class="paso-num">2</div><div>Tiene que ser ≥ 0, asi que: x - 4 ≥ 0</div></div>
+        <div class="paso"><div class="paso-num">3</div><div>Resolvemos: x ≥ 4</div></div>
+        <div class="paso"><div class="paso-num">4</div><div><strong>Dominio = [4, +∞)</strong> (desde 4 en adelante, incluyendo el 4)</div></div>
+      </div>
+      <div class="truco">
+        <br><strong>Usamos [ ] cuando el numero SI entra y ( ) cuando NO entra.</strong> Como x = 4 si vale (√0 = 0), ponemos [4. El infinito SIEMPRE lleva parentesis ().
       </div>
     </div>
 
-    <!-- Discontinuïtats -->
-    <div class="theory-topic" id="topic-disc" style="display:none">
-      <div class="theory-card">
-        <h3>⚡ Tipus de discontinuïtats</h3>
-        <p>Hi ha tres tipus principals:</p>
-        <div class="disc-types">
-          <div class="disc-type">
-            <div class="emoji">📊</div>
-            <h4>Salt finit</h4>
-            <p>La funció "salta" d'un valor a un altre. Els dos límits laterals existeixen però són <strong>diferents</strong>.</p>
-            <p style="color:var(--pink);margin-top:4px">🇪🇸 La función "salta" de un valor a otro.</p>
-          </div>
-          <div class="disc-type">
-            <div class="emoji">🚀</div>
-            <h4>Salt infinit (asimptòtic)</h4>
-            <p>La funció se'n va a <strong>infinit</strong> (+∞ o −∞). Hi ha una <strong>asímptota vertical</strong>.</p>
-            <p style="color:var(--pink);margin-top:4px">🇪🇸 La función se va al infinito. Hay una asíntota vertical.</p>
-          </div>
-          <div class="disc-type">
-            <div class="emoji">🕳️</div>
-            <h4>Evitable</h4>
-            <p>Hi ha un "forat" a la gràfica. El límit existeix però la funció <strong>no està definida</strong> o val diferent.</p>
-            <p style="color:var(--pink);margin-top:4px">🇪🇸 Hay un "agujero" en la gráfica que se podría rellenar.</p>
-          </div>
-        </div>
+    <div class="card">
+      <h3>➗ Fracciones (funciones racionales)</h3>
+      <p>Regla de oro: <strong>el denominador (lo de abajo) NO puede ser cero</strong>. Division entre cero = prohibido.</p>
+      <div class="formula-box">f(x) = algo / Q(x) → Necesitas que Q(x) ≠ 0</div>
+      <div class="ejemplo">
+        <br><strong>f(x) = 1 / (x - 3)</strong><br><br>
+        <div class="paso"><div class="paso-num">1</div><div>El denominador es: x - 3</div></div>
+        <div class="paso"><div class="paso-num">2</div><div>NO puede ser 0, asi que: x - 3 ≠ 0</div></div>
+        <div class="paso"><div class="paso-num">3</div><div>Resolvemos: x ≠ 3</div></div>
+        <div class="paso"><div class="paso-num">4</div><div><strong>Dominio = Todos los reales excepto 3</strong> = (-∞, 3) ∪ (3, +∞)</div></div>
       </div>
-      <div class="theory-card">
-        <h3>🔍 Com identificar-les a la gràfica</h3>
-        <div class="example"><strong>Salt finit:</strong> Veus un salt entre dos trossos de corba, amb un cercle obert i un tancat a altures diferents.</div>
-        <div class="example"><strong>Salt infinit:</strong> La corba puja o baixa verticalment sense límit (es dispara). Línea puntejada vertical = asímptota.</div>
-        <div class="example"><strong>Evitable:</strong> Veus un cercle obert (forat) però la corba continua suaument. Es podria "tapar" el forat.</div>
+      <div class="ejemplo">
+        <br><strong>f(x) = (2x+6) / (x² - 3x + 2)</strong><br><br>
+        <div class="paso"><div class="paso-num">1</div><div>El denominador es: x² - 3x + 2</div></div>
+        <div class="paso"><div class="paso-num">2</div><div>Lo igualamos a 0: x² - 3x + 2 = 0</div></div>
+        <div class="paso"><div class="paso-num">3</div><div>Factorizamos: (x - 1)(x - 2) = 0 → x = 1 o x = 2</div></div>
+        <div class="paso"><div class="paso-num">4</div><div><strong>Dominio = Todos los reales excepto 1 y 2</strong> = (-∞, 1) ∪ (1, 2) ∪ (2, +∞)</div></div>
       </div>
-    </div>
-
-    <!-- Monotonia -->
-    <div class="theory-topic" id="topic-mono" style="display:none">
-      <div class="theory-card">
-        <h3>📈 Monotonia (Creixement i Decreixement)</h3>
-        <p>La monotonia descriu si la funció <strong>puja</strong> o <strong>baixa</strong>.</p>
-        <div class="formula">f <strong style="color:var(--green)">creix</strong> quan: si x₁ &lt; x₂ → f(x₁) &lt; f(x₂)</div>
-        <p>Si avancem cap a la dreta (x augmenta), la funció <strong style="color:var(--green)">puja</strong>.</p>
-        <div class="formula">f <strong style="color:var(--red)">decreix</strong> quan: si x₁ &lt; x₂ → f(x₁) &gt; f(x₂)</div>
-        <p>Si avancem cap a la dreta (x augmenta), la funció <strong style="color:var(--red)">baixa</strong>.</p>
-        <div class="es-note">🇪🇸 Crece: si vamos a la derecha, la función sube. Decrece: si vamos a la derecha, la función baja.</div>
-      </div>
-    </div>
-
-    <!-- Extrems -->
-    <div class="theory-topic" id="topic-extrems" style="display:none">
-      <div class="theory-card">
-        <h3>⛰️ Màxims i Mínims</h3>
-        <p>Un <strong style="color:var(--orange)">màxim</strong> és un punt on la funció passa de créixer a decréixer (punt més alt local).</p>
-        <p>Un <strong style="color:var(--accent2)">mínim</strong> és un punt on la funció passa de decréixer a créixer (punt més baix local).</p>
-        <div class="example"><strong>Màxim:</strong> 📈 → ⛰️ → 📉 (puja i després baixa)<br><strong>Mínim:</strong> 📉 → 🏜️ → 📈 (baixa i després puja)</div>
-        <div class="es-note">🇪🇸 Máximo: sube y luego baja. Mínimo: baja y luego sube.</div>
-      </div>
-      <div class="theory-card">
-        <h3>📍 Recorregut (Rang)</h3>
-        <p>El <strong style="color:var(--accent)">recorregut</strong> és el conjunt de valors que pren <strong>y</strong> = f(x). Mirem la gràfica de baix a dalt.</p>
-        <div class="example"><strong>Exemple:</strong> Si la gràfica va des de y = −3 fins a y = +∞ passant per un forat, pot ser: Rec f(x) = (−∞, −3) ∪ [4, +∞)</div>
-        <div class="es-note">🇪🇸 El recorrido (rango) son todos los valores que toma y.</div>
-      </div>
-      <div class="theory-card">
-        <h3>✂️ Punts de tall amb els eixos</h3>
-        <p><strong>Tall amb eix X:</strong> Fem y = 0 i resolem. Els punts tenen forma <strong>(a, 0)</strong>.</p>
-        <p><strong>Tall amb eix Y:</strong> Fem x = 0 i calculem f(0). El punt té forma <strong>(0, b)</strong>.</p>
-        <div class="example"><strong>Exemple:</strong> Tall eix X: (−10, 0) i (7, 0) — Tall eix Y: (0, 3)</div>
-        <div class="es-note">🇪🇸 Corte con eje X: y=0. Corte con eje Y: x=0.</div>
-      </div>
-    </div>
-
-    <!-- Intervals -->
-    <div class="theory-topic" id="topic-intervals" style="display:none">
-      <div class="theory-card">
-        <h3>📏 Notació d'intervals</h3>
-        <p>Recordem com escriure intervals:</p>
-        <div class="interval-visual">
-          <div class="iv-item">
-            <div class="iv-line"><div class="dot open left"></div><div class="dot open right"></div></div>
-            <div class="iv-label">(a, b) obert</div>
-          </div>
-          <div class="iv-item">
-            <div class="iv-line"><div class="dot closed left"></div><div class="dot closed right"></div></div>
-            <div class="iv-label">[a, b] tancat</div>
-          </div>
-          <div class="iv-item">
-            <div class="iv-line"><div class="dot closed left"></div><div class="dot open right"></div></div>
-            <div class="iv-label">[a, b) semiobert</div>
-          </div>
-          <div class="iv-item">
-            <div class="iv-line"><div class="dot open left"></div><div class="dot closed right"></div></div>
-            <div class="iv-label">(a, b] semiobert</div>
-          </div>
-        </div>
-        <p><strong style="color:var(--accent)">( )</strong> = el punt <strong>no</strong> s'inclou (obert, cercle buit)</p>
-        <p><strong style="color:var(--accent)">[ ]</strong> = el punt <strong>sí</strong> s'inclou (tancat, cercle ple)</p>
-        <p style="margin-top:8px"><strong>∞ i −∞</strong> sempre van amb parèntesi ( ) perquè no es poden assolir.</p>
-        <div class="es-note">🇪🇸 ( ) = no incluido (abierto). [ ] = incluido (cerrado). ∞ siempre con paréntesis.</div>
+      <div class="truco">
+        <br><strong>Receta rapida para fracciones:</strong> 1) Coges el denominador. 2) Lo igualas a cero. 3) Resuelves. 4) Esos valores son los que EXCLUYES del dominio.
       </div>
     </div>
   </div>
 
-  <!-- ========== DOMINI ========== -->
-  <div class="section" id="sec-domini">
-    <div class="section-title">
-      <div class="icon" style="background:linear-gradient(135deg,#f472b6,#c084fc)">🎯</div>
-      <h2>Practica: Domini</h2>
+  <!-- CONTINUIDAD -->
+  <div class="sub-content" id="topic-cont">
+    <div class="card">
+      <h3>〰️ Continuidad</h3>
+      <div class="definition">
+        <br>Una funcion es <strong>continua</strong> si puedes dibujar su grafica <strong>sin levantar el lapiz del papel</strong>. Asi de simple.
+      </div>
+      <div class="box-pink">
+        <strong>Piensalo asi:</strong> Imagina que vas en bici por un camino. Si el camino no tiene baches, huecos ni saltos, es continuo. Si hay un agujero o un salto, ahi hay una discontinuidad.
+      </div>
+      <div class="box-green">
+        <strong>Buena noticia:</strong> Los polinomios (x², 2x+3, x³-x...) son SIEMPRE continuos en todos los reales. Nunca tienen problemas.
+      </div>
     </div>
-    <div class="quiz-container" id="quiz-domini"></div>
   </div>
 
-  <!-- ========== CONTINUÏTAT ========== -->
-  <div class="section" id="sec-continuitat">
-    <div class="section-title">
-      <div class="icon" style="background:linear-gradient(135deg,#34d399,#818cf8)">〰️</div>
-      <h2>Practica: Continuïtat i Discontinuïtats</h2>
+  <!-- DISCONTINUIDADES -->
+  <div class="sub-content" id="topic-disc">
+    <div class="card">
+      <h3>⚡ Tipos de discontinuidades</h3>
+      <p>Cuando la grafica tiene algun "problema" y tienes que levantar el lapiz, hay 3 tipos:</p>
     </div>
-    <div class="quiz-container" id="quiz-continuitat"></div>
+    <div class="card" style="border-left:4px solid var(--orange)">
+      <h3>💥 1. Salto finito</h3>
+      <p>La grafica va por un lado y de repente <strong>"salta"</strong> a otro nivel, como si subieras un escalon.</p>
+      <div class="box-orange">
+        <strong>Como se ve:</strong> Dos trozos de curva a alturas diferentes. En el punto del salto ves un circulo abierto (hueco) arriba y uno cerrado (lleno) abajo, o al reves.
+      </div>
+      <div class="graph-visual">
+  y
+  4|        ●
+  3|
+  2| ──────○
+  1|
+   +──────────── x
+       salto!
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--red)">
+      <h3>🚀 2. Salto infinito (asintota vertical)</h3>
+      <p>La grafica se <strong>"dispara" hacia arriba o hacia abajo sin limite</strong>. Se va al infinito. Hay una linea vertical invisible que la funcion nunca toca.</p>
+      <div class="box-pink">
+        <strong>Como se ve:</strong> La curva sube (o baja) cada vez mas rapido, acercandose a una linea vertical pero sin tocarla nunca.
+      </div>
+      <div class="graph-visual">
+  y
+  |    |
+  |    |  /
+  |    | /
+  |    |/
+  -----+------- x
+      /|
+     / |
+    /  |    asintota
+       |    vertical
+      </div>
+      <div class="truco">
+        <br>Las funciones tipo <strong>1/(x-a)</strong> siempre tienen una asintota vertical en x = a. El denominador se hace cero ahi y la funcion "explota".
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--blue)">
+      <h3>🕳️ 3. Evitable (un agujero)</h3>
+      <p>Hay un <strong>"agujerito"</strong> en la grafica. La curva pasa suavemente, pero falta justo ese punto. Si lo rellenaras, la funcion seria continua.</p>
+      <div class="box-blue">
+        <strong>Como se ve:</strong> Un circulito abierto (hueco) en la curva, pero la curva sigue su camino normal por los dos lados.
+      </div>
+      <div class="graph-visual">
+  y
+  |      /
+  |    ○     ← agujerito
+  |  /
+  |/
+  +──────── x
+      </div>
+    </div>
   </div>
 
-  <!-- ========== MONOTONIA ========== -->
-  <div class="section" id="sec-monotonia">
-    <div class="section-title">
-      <div class="icon" style="background:linear-gradient(135deg,#fbbf24,#f472b6)">📈</div>
-      <h2>Practica: Monotonia, Extrems i Recorregut</h2>
+  <!-- MONOTONIA -->
+  <div class="sub-content" id="topic-mono">
+    <div class="card">
+      <h3>📈 Crecimiento y Decrecimiento</h3>
+      <div class="definition">
+        <br>Una funcion <strong>crece</strong> en un intervalo si, al caminar hacia la derecha, la grafica <strong>sube</strong>. Y <strong>decrece</strong> si al caminar hacia la derecha, la grafica <strong>baja</strong>.
+      </div>
+      <div class="box-green">
+        <strong>Piensalo asi:</strong> Imagina que caminas por una montana de izquierda a derecha. Si vas cuesta arriba, la funcion crece. Si vas cuesta abajo, decrece.
+      </div>
+      <div class="graph-visual">
+  y        CRECE     DECRECE     CRECE
+  |         /\
+  |        /  \         /
+  |       /    \       /
+  |      /      \     /
+  |     /        \   /
+  |    /          \ /
+  |   /            V ← minimo
+  +───────────────────── x
+      ↑ minimo
+      </div>
+      <div class="truco">
+        <br><strong>Regla facil:</strong> Mira la grafica de IZQUIERDA a DERECHA. Si sube → crece. Si baja → decrece. Siempre leemos de izquierda a derecha, como un libro.
+      </div>
     </div>
-    <div class="quiz-container" id="quiz-monotonia"></div>
   </div>
 
-  <!-- ========== ANÀLISI ========== -->
-  <div class="section" id="sec-analisi">
-    <div class="section-title">
-      <div class="icon" style="background:linear-gradient(135deg,#818cf8,#34d399)">🔍</div>
-      <h2>Anàlisi completa d'una funció</h2>
+  <!-- EXTREMOS -->
+  <div class="sub-content" id="topic-extremos">
+    <div class="card">
+      <h3>⛰️ Maximos y Minimos</h3>
+      <div class="definition">
+        <br>Un <strong>maximo</strong> es un punto donde la funcion deja de subir y empieza a bajar (la cima de una montaña). Un <strong>minimo</strong> es un punto donde deja de bajar y empieza a subir (el fondo de un valle).
+      </div>
+      <div class="box-purple">
+        <strong>Maximo = cima de montaña:</strong> primero subes (crece) y luego bajas (decrece). 📈→⛰️→📉
+      </div>
+      <div class="box-blue">
+        <strong>Minimo = fondo de valle:</strong> primero bajas (decrece) y luego subes (crece). 📉→🏜️→📈
+      </div>
+      <div class="ejemplo">
+        <br><strong>f(x) = -x² (parabola boca abajo)</strong><br><br>
+        La funcion sube hasta x = 0 y luego baja. Entonces:<br>
+        - Tiene un <strong>MAXIMO en (0, 0)</strong> (es la cima)<br>
+        - Crece en (-∞, 0) y decrece en (0, +∞)
+      </div>
+      <div class="truco">
+        <br><strong>Para recordar:</strong> Maximo = crece y LUEGO decrece (↗↘). Minimo = decrece y LUEGO crece (↘↗).
+      </div>
     </div>
-    <div class="quiz-container" id="quiz-analisi"></div>
   </div>
 
-  <!-- ========== EXAMEN ========== -->
-  <div class="section" id="sec-examen">
-    <div class="section-title">
-      <div class="icon" style="background:linear-gradient(135deg,#fb7185,#fbbf24)">🧪</div>
-      <h2>Examen simulat</h2>
+  <!-- RECORRIDO -->
+  <div class="sub-content" id="topic-recorrido">
+    <div class="card">
+      <h3>📏 Recorrido (o Rango)</h3>
+      <div class="definition">
+        <br>El <strong>recorrido</strong> son todos los valores de <strong>y</strong> que la funcion puede tomar. Si el dominio mira el eje X, el recorrido mira el eje Y.
+      </div>
+      <div class="box-green">
+        <strong>Piensalo asi:</strong> Pon una regla vertical al lado de la grafica. El recorrido son todas las alturas (valores de y) que la grafica alcanza.
+      </div>
+      <div class="ejemplo">
+        <br><strong>f(x) = x² (parabola boca arriba)</strong><br><br>
+        La grafica tiene su punto mas bajo en y = 0 (el vertice) y sube infinitamente. Nunca baja de 0.<br>
+        <strong>Recorrido = [0, +∞)</strong> → y puede ser 0 o cualquier numero positivo.
+      </div>
+      <div class="ejemplo">
+        <br><strong>f(x) = -x² (parabola boca abajo)</strong><br><br>
+        La grafica tiene su punto mas alto en y = 0 y baja infinitamente. Nunca sube de 0.<br>
+        <strong>Recorrido = (-∞, 0]</strong> → y puede ser 0 o cualquier numero negativo.
+      </div>
     </div>
-    <div class="quiz-container" id="quiz-examen"></div>
   </div>
 
-  <div class="footer">
-    Fet amb ❤️ per estudiar mates — Continua practicant, tu pots! 💪
+  <!-- CORTES -->
+  <div class="sub-content" id="topic-cortes">
+    <div class="card">
+      <h3>✂️ Cortes con los ejes</h3>
+      <div class="definition">
+        <br>Los <strong>cortes con los ejes</strong> son los puntos donde la grafica toca o cruza el eje X y el eje Y.
+      </div>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--pink)">
+      <h3>Corte con el eje X (donde y = 0)</h3>
+      <p>Para encontrarlo: <strong>haces f(x) = 0 y resuelves</strong>. Los puntos tendran forma <strong>(a, 0)</strong>.</p>
+      <div class="ejemplo">
+        <br><strong>f(x) = x² - 4</strong><br><br>
+        <div class="paso"><div class="paso-num">1</div><div>Hacemos f(x) = 0 → x² - 4 = 0</div></div>
+        <div class="paso"><div class="paso-num">2</div><div>x² = 4 → x = ±2</div></div>
+        <div class="paso"><div class="paso-num">3</div><div>Cortes con eje X: <strong>(2, 0)</strong> y <strong>(-2, 0)</strong></div></div>
+      </div>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--blue)">
+      <h3>Corte con el eje Y (donde x = 0)</h3>
+      <p>Para encontrarlo: <strong>calculas f(0)</strong>. Solo puede haber UN punto, con forma <strong>(0, b)</strong>.</p>
+      <div class="ejemplo">
+        <br><strong>f(x) = 3x² + 2x - 7</strong><br><br>
+        <div class="paso"><div class="paso-num">1</div><div>Calculamos f(0) = 3(0)² + 2(0) - 7 = -7</div></div>
+        <div class="paso"><div class="paso-num">2</div><div>Corte con eje Y: <strong>(0, -7)</strong></div></div>
+      </div>
+      <div class="truco">
+        <br><strong>Eje X → y = 0 (resuelves).</strong> Eje Y → x = 0 (sustituyes). Solo hay que recordar eso!
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVALOS -->
+  <div class="sub-content" id="topic-intervalos">
+    <div class="card">
+      <h3>📏 Notacion de intervalos</h3>
+      <p>Usamos intervalos para decir "desde aqui hasta aqui". Hay que saber cuando usar parentesis y cuando corchetes:</p>
+      <div class="box-purple">
+        <strong>[ ] = INCLUIDO</strong> (el numero SI entra). Circulo <strong>lleno</strong> ●<br>
+        Se usa cuando la funcion SI vale en ese punto.
+      </div>
+      <div class="box-pink">
+        <strong>( ) = EXCLUIDO</strong> (el numero NO entra). Circulo <strong>vacio</strong> ○<br>
+        Se usa cuando la funcion NO vale en ese punto, o para ∞ y -∞.
+      </div>
+      <div class="formula-box">∞ y -∞ SIEMPRE van con parentesis ( ) porque no son numeros reales</div>
+      <div class="ejemplo">
+        <br>
+        <strong>(2, 5)</strong> = los numeros entre 2 y 5, SIN incluir ni el 2 ni el 5<br>
+        <strong>[2, 5]</strong> = los numeros entre 2 y 5, SI incluidos el 2 y el 5<br>
+        <strong>[2, 5)</strong> = incluye el 2 pero NO el 5<br>
+        <strong>(-∞, 3)</strong> = todos los numeros menores que 3<br>
+        <strong>[0, +∞)</strong> = el cero y todos los positivos<br>
+      </div>
+      <div class="box-green">
+        <strong>El simbolo ∪ (union)</strong> une dos intervalos. Por ejemplo: (-∞, 2) ∪ (2, +∞) significa "todos los reales excepto el 2".
+      </div>
+    </div>
   </div>
 </div>
 
-<script>
-// ==================== STARS ====================
-const starsC = document.getElementById('starsContainer');
-for(let i=0;i<60;i++){
-  const s=document.createElement('div');s.className='star-dot';
-  const sz=Math.random()*3+1;
-  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
-  starsC.appendChild(s);
-}
+<!-- ==================== DOMINIO QUIZ ==================== -->
+<div class="section" id="sec-dominio">
+  <div class="sec-title">
+    <div class="icon" style="background:linear-gradient(135deg,#f472b6,#c084fc)">🎯</div>
+    <h2>Practica: Dominio</h2>
+    <p>Encuentra donde "vive" cada funcion</p>
+  </div>
+  <div class="quiz-container" id="quiz-dominio"></div>
+</div>
 
-// ==================== NAVIGATION ====================
-const navBtns=document.querySelectorAll('.nav-btn');
-const sections=document.querySelectorAll('.section');
-navBtns.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    navBtns.forEach(b=>b.classList.remove('active'));
+<!-- ==================== CONTINUIDAD QUIZ ==================== -->
+<div class="section" id="sec-continuidad">
+  <div class="sec-title">
+    <div class="icon" style="background:linear-gradient(135deg,#34d399,#818cf8)">〰️</div>
+    <h2>Practica: Continuidad y Discontinuidades</h2>
+    <p>Identifica saltos, agujeros y asintoras</p>
+  </div>
+  <div class="quiz-container" id="quiz-continuidad"></div>
+</div>
+
+<!-- ==================== MONOTONIA QUIZ ==================== -->
+<div class="section" id="sec-monotonia">
+  <div class="sec-title">
+    <div class="icon" style="background:linear-gradient(135deg,#fbbf24,#f472b6)">📈</div>
+    <h2>Practica: Sube, Baja, Maximos y Minimos</h2>
+    <p>Donde crece, donde decrece, y los puntos clave</p>
+  </div>
+  <div class="quiz-container" id="quiz-monotonia"></div>
+</div>
+
+<!-- ==================== ANALISIS QUIZ ==================== -->
+<div class="section" id="sec-analisis">
+  <div class="sec-title">
+    <div class="icon" style="background:linear-gradient(135deg,#818cf8,#34d399)">🔍</div>
+    <h2>Analisis completo de una funcion</h2>
+    <p>Mezclamos todo lo aprendido</p>
+  </div>
+  <div class="quiz-container" id="quiz-analisis"></div>
+</div>
+
+<!-- ==================== EXAMEN ==================== -->
+<div class="section" id="sec-examen">
+  <div class="sec-title">
+    <div class="icon" style="background:linear-gradient(135deg,#fb7185,#fbbf24)">🧪</div>
+    <h2>Examen simulado</h2>
+    <p>Comprueba si estas lista para el examen real</p>
+  </div>
+  <div class="quiz-container" id="quiz-examen"></div>
+</div>
+
+<div class="footer">
+  Hecho con ❤️ para que las mates sean mas faciles — Tu puedes! 💪
+</div>
+</div>
+
+<script>
+// ================ NAVIGATION ================
+const navBtns = document.querySelectorAll('.nav-btn');
+const sections = document.querySelectorAll('.section');
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    sections.forEach(s=>s.classList.remove('active'));
-    document.getElementById('sec-'+btn.dataset.section).classList.add('active');
-    window.scrollTo({top:0,behavior:'smooth'});
+    sections.forEach(s => s.classList.remove('active'));
+    document.getElementById('sec-' + btn.dataset.section).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
   });
 });
 
 // Theory sub-tabs
-const theoryTabs=document.querySelectorAll('#theoryTabs .sub-tab');
-const theoryTopics=document.querySelectorAll('.theory-topic');
-theoryTabs.forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    theoryTabs.forEach(t=>t.classList.remove('active'));
+const theoryTabs = document.querySelectorAll('#theoryTabs .sub-tab');
+const theoryTopics = document.querySelectorAll('.sub-content');
+theoryTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    theoryTabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    theoryTopics.forEach(t=>t.style.display='none');
-    document.getElementById('topic-'+tab.dataset.topic).style.display='block';
+    theoryTopics.forEach(t => t.classList.remove('active'));
+    document.getElementById('topic-' + tab.dataset.topic).classList.add('active');
   });
 });
 
-// ==================== QUIZ ENGINE ====================
+// ================ QUIZ ENGINE ================
 function buildQuiz(containerId, questions) {
   const container = document.getElementById(containerId);
   let current = 0, score = 0, answered = new Array(questions.length).fill(false);
 
   function render() {
-    if (current >= questions.length) {
-      showScore(); return;
-    }
+    if (current >= questions.length) { showScore(); return; }
     const q = questions[current];
     const pct = Math.round((current / questions.length) * 100);
     let html = `
@@ -476,23 +857,23 @@ function buildQuiz(containerId, questions) {
       html += `</div>`;
     }
     html += `<div class="feedback" id="fb-${current}"></div>`;
-    html += `<button class="btn btn-primary btn-next" id="nextBtn-${current}" style="display:none" onclick="nextQ('${containerId}')">Següent →</button>`;
+    html += `<button class="btn btn-primary btn-next" id="nextBtn-${current}" style="display:none" onclick="nextQ('${containerId}')">Siguiente →</button>`;
     html += `</div>`;
     container.innerHTML = html;
   }
 
   function showScore() {
     const pct = Math.round((score / questions.length) * 100);
-    let emoji = '🎉', msg = 'Excel·lent!';
-    if (pct < 50) { emoji = '💪'; msg = 'Segueix practicant!'; }
-    else if (pct < 70) { emoji = '👍'; msg = 'Bé, però pots millorar!'; }
-    else if (pct < 90) { emoji = '🌟'; msg = 'Molt bé!'; }
+    let emoji = '🏆', msg = 'Increible!';
+    if (pct < 50) { emoji = '💪'; msg = 'Sigue practicando, tu puedes!'; }
+    else if (pct < 70) { emoji = '👍'; msg = 'Bien, pero puedes mejorar!'; }
+    else if (pct < 90) { emoji = '🌟'; msg = 'Muy bien!'; }
     container.innerHTML = `
       <div class="score-card">
         <div class="score-emoji">${emoji}</div>
         <div class="score-text">${score}/${questions.length}</div>
         <div class="score-sub">${msg} (${pct}%)</div>
-        <button class="btn btn-primary" onclick="resetQuiz('${containerId}')">🔄 Tornar a intentar</button>
+        <button class="btn btn-primary" onclick="resetQuiz('${containerId}')">🔄 Intentar de nuevo</button>
       </div>`;
   }
 
@@ -513,12 +894,12 @@ function handleMC(cid, qIdx, optIdx) {
     opts[optIdx].classList.add('correct');
     state.score++;
     fb.className = 'feedback show correct';
-    fb.innerHTML = '✅ ' + (q.explanation || 'Correcte!');
+    fb.innerHTML = '✅ ' + (q.explanation || 'Correcto!');
   } else {
     opts[optIdx].classList.add('wrong');
     opts[q.answer].classList.add('correct');
     fb.className = 'feedback show wrong';
-    fb.innerHTML = '❌ ' + (q.explanation || `La resposta correcta era la ${['A','B','C','D','E'][q.answer]}.`);
+    fb.innerHTML = '❌ ' + (q.explanation || `La respuesta correcta era la ${['A','B','C','D','E'][q.answer]}.`);
   }
   document.getElementById(`nextBtn-${qIdx}`).style.display = 'inline-block';
 }
@@ -537,456 +918,426 @@ function resetQuiz(cid) {
   state.render();
 }
 
-// ==================== DOMINI QUIZ ====================
-const dominiQ = [
+// ================ DOMINIO QUIZ ================
+const dominioQ = [
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = x² + 3x − 5</span>?',
-    hint:'És un polinomi...',
-    options:['Dom f(x) = [0, +∞)','Dom f(x) = ℝ','Dom f(x) = (-5, +∞)','Dom f(x) = ℝ − {0}'],
+    text:'Cual es el dominio de <span class="fn">f(x) = x² + 3x - 5</span>?',
+    hint:'Es un polinomio... que pasa con los polinomios?',
+    options:['Dom = [0, +∞)','Dom = Todos los reales = (-∞, +∞)','Dom = (-5, +∞)','Dom = Todos excepto {0}'],
     answer:1,
-    explanation:'Els polinomis sempre tenen domini ℝ (tots els reals). No hi ha cap restricció!'
+    explanation:'Los polinomios SIEMPRE tienen dominio todos los reales. No hay ningun valor de x que de problemas. Puedes meter cualquier numero!'
   },
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = √(x − 4)</span>?',
-    hint:'Què ha de passar amb el que hi ha dins l\'arrel?',
-    options:['Dom f(x) = ℝ','Dom f(x) = (4, +∞)','Dom f(x) = [4, +∞)','Dom f(x) = (-∞, 4]'],
+    text:'Cual es el dominio de <span class="fn">f(x) = √(x - 4)</span>?',
+    hint:'Que tiene que pasar con lo que hay dentro de la raiz?',
+    options:['Dom = Todos los reales','Dom = (4, +∞)','Dom = [4, +∞)','Dom = (-∞, 4]'],
     answer:2,
-    explanation:'Cal que x−4 ≥ 0, és a dir x ≥ 4. Com x=4 sí que hi entra (√0 = 0), és [4, +∞) amb claudàtor.'
+    explanation:'Dentro de la raiz: x - 4 ≥ 0 → x ≥ 4. Como x = 4 SI vale (√0 = 0), usamos corchete: [4, +∞). Recuerda: corchete [ ] = incluido!'
   },
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = 1/(x − 3)</span>?',
-    hint:'El denominador no pot ser zero...',
-    options:['Dom f(x) = ℝ','Dom f(x) = ℝ − {3}','Dom f(x) = ℝ − {−3}','Dom f(x) = (3, +∞)'],
+    text:'Cual es el dominio de <span class="fn">f(x) = 1/(x - 3)</span>?',
+    hint:'El denominador no puede ser cero. Que valor de x lo hace cero?',
+    options:['Dom = Todos los reales','Dom = Todos excepto {3}','Dom = Todos excepto {-3}','Dom = (3, +∞)'],
     answer:1,
-    explanation:'x − 3 = 0 → x = 3. Excloem x=3, així que Dom = ℝ − {3} = (−∞,3) ∪ (3,+∞).'
+    explanation:'El denominador x - 3 = 0 cuando x = 3. Ese valor esta PROHIBIDO. Dom = (-∞, 3) ∪ (3, +∞), o sea todos excepto 3.'
   },
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = √(2x + 6)</span>?',
-    hint:'Resol 2x + 6 ≥ 0',
-    options:['Dom f(x) = [−3, +∞)','Dom f(x) = (−3, +∞)','Dom f(x) = [3, +∞)','Dom f(x) = ℝ'],
+    text:'Cual es el dominio de <span class="fn">f(x) = √(2x + 6)</span>?',
+    hint:'Pon lo de dentro de la raiz ≥ 0 y resuelve la ecuacion',
+    options:['Dom = [-3, +∞)','Dom = (-3, +∞)','Dom = [3, +∞)','Dom = Todos los reales'],
     answer:0,
-    explanation:'2x + 6 ≥ 0 → 2x ≥ −6 → x ≥ −3. Dom = [−3, +∞).'
+    explanation:'2x + 6 ≥ 0 → 2x ≥ -6 → x ≥ -3. Como x = -3 vale (√0 = 0), incluimos con corchete: [-3, +∞).'
   },
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = 1/(x² + 2x − 8)</span>?',
-    hint:'Factoritza x² + 2x − 8 = 0 per trobar quins valors excloure.',
-    options:[
-      'Dom = ℝ − {−4, 2}',
-      'Dom = ℝ − {4, −2}',
-      'Dom = ℝ − {−2, 4}',
-      'Dom = ℝ'
-    ],
-    answer:0,
-    explanation:'x² + 2x − 8 = 0 → x = (−2 ± √36)/2 = (−2 ± 6)/2 → x = 2 o x = −4. Dom = (−∞,−4) ∪ (−4,2) ∪ (2,+∞).'
-  },
-  {
-    type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = (2x+6)/(x²−3x+2)</span>?',
-    hint:'Factoritza el denominador.',
-    options:[
-      'Dom = ℝ − {1, 2}',
-      'Dom = ℝ − {−1, −2}',
-      'Dom = ℝ − {−3}',
-      'Dom = ℝ'
-    ],
-    answer:0,
-    explanation:'x²−3x+2 = 0 → (x−1)(x−2) = 0 → x = 1 o x = 2. Dom = (−∞,1) ∪ (1,2) ∪ (2,+∞).'
-  },
-  {
-    type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = √(9 − x²)</span>?',
-    hint:'Resol 9 − x² ≥ 0.',
-    options:['Dom = [−3, 3]','Dom = (−3, 3)','Dom = [0, 3]','Dom = ℝ'],
-    answer:0,
-    explanation:'9 − x² ≥ 0 → x² ≤ 9 → −3 ≤ x ≤ 3. Dom = [−3, 3].'
-  },
-  {
-    type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = 5/(x² + 1)</span>?',
-    hint:'x² + 1 pot ser zero alguna vegada?',
-    options:['Dom = ℝ − {1, −1}','Dom = ℝ − {0}','Dom = ℝ','Dom = (0, +∞)'],
+    text:'Cual es el dominio de <span class="fn">f(x) = 5/(x² + 1)</span>?',
+    hint:'x² + 1 puede ser cero alguna vez? Piensa: cual es el minimo valor de x²?',
+    options:['Dom = Todos excepto {1, -1}','Dom = Todos excepto {0}','Dom = Todos los reales','Dom = (0, +∞)'],
     answer:2,
-    explanation:'x² + 1 ≥ 1 sempre (mai és zero), per tant el domini és ℝ. No hi ha cap restricció!'
+    explanation:'x² siempre es ≥ 0, asi que x² + 1 siempre es ≥ 1. NUNCA es cero! No hay restriccion. Dom = todos los reales.'
   },
   {
     type:'mc',
-    text:'Si el domini d\'una funció és [−2, 1) ∪ (1, 4], quins valors de x NO pertanyen al domini?',
-    options:['x = −2 i x = 4','x = 1','x = 0','x = −3, x = 1, x = 5'],
-    answer:3,
-    explanation:'x=1 no hi pertany (exclòs amb parèntesi). x=−3 i x=5 estan fora dels intervals. x=−2 i x=4 sí pertanyen (claudàtors).'
+    text:'Cual es el dominio de <span class="fn">f(x) = √(9 - x²)</span>?',
+    hint:'Resuelve 9 - x² ≥ 0. Piensa: cuando x² es mas grande que 9?',
+    options:['Dom = [-3, 3]','Dom = (-3, 3)','Dom = [0, 3]','Dom = Todos los reales'],
+    answer:0,
+    explanation:'9 - x² ≥ 0 → x² ≤ 9 → -3 ≤ x ≤ 3. Ambos extremos valen (9-9=0, √0=0), asi que Dom = [-3, 3].'
   },
   {
     type:'mc',
-    text:'Una funció racional <span class="fn">f(x) = P(x)/Q(x)</span> té domini ℝ. Què podem dir del denominador Q(x)?',
-    options:[
-      'Q(x) no té arrels reals (mai val zero)',
-      'Q(x) = 0 té solucions complexes',
-      'Q(x) és sempre positiu o sempre negatiu',
-      'Totes les anteriors són certes'
-    ],
+    text:'Cual es el dominio de <span class="fn">f(x) = (2x+6)/(x² - 3x + 2)</span>?',
+    hint:'Factoriza el denominador: x² - 3x + 2 = (x-1)(x-2)',
+    options:['Dom = Todos excepto {1, 2}','Dom = Todos excepto {-1, -2}','Dom = Todos excepto {-3}','Dom = Todos los reales'],
+    answer:0,
+    explanation:'El denominador (x-1)(x-2) = 0 cuando x = 1 o x = 2. Esos dos valores estan prohibidos. Dom = (-∞,1) ∪ (1,2) ∪ (2,+∞).'
+  },
+  {
+    type:'mc',
+    text:'Si el dominio de una funcion es [-2, 1) ∪ (1, 4], que valores de x NO pertenecen al dominio?',
+    hint:'Fijate en los parentesis y en que hay un "hueco" en x = 1',
+    options:['x = -2 y x = 4','x = 1 solamente','x = 0','x = -3, x = 1, y x = 5'],
     answer:3,
-    explanation:'Si el domini és ℝ, Q(x) no s\'anul·la mai per cap x real. Això vol dir que no té arrels reals, que les solucions de Q(x)=0 són complexes, i que Q(x) manté el signe.'
+    explanation:'x = 1 no entra (parentesis abierto por ambos lados). x = -3 y x = 5 estan fuera de los intervalos. x = -2 y x = 4 SI entran (corchetes cerrados).'
+  },
+  {
+    type:'mc',
+    text:'Una funcion racional f(x) = P(x)/Q(x) tiene dominio todos los reales. Que podemos decir del denominador Q(x)?',
+    hint:'Si el dominio es todo, significa que Q(x) nunca vale cero...',
+    options:['Q(x) nunca vale cero para ningun x real','Q(x) = 0 tiene soluciones pero se simplifican','Q(x) siempre es positivo','Q(x) nunca vale cero Y siempre mantiene el mismo signo'],
+    answer:3,
+    explanation:'Si el dominio es todos los reales, Q(x) nunca se anula. Eso significa que no tiene raices reales y por tanto siempre es positivo o siempre negativo (mantiene el signo).'
+  },
+  {
+    type:'mc',
+    text:'Cual es el dominio de <span class="fn">f(x) = 1/(x² + 2x - 8)</span>?',
+    hint:'Resuelve x² + 2x - 8 = 0 (usa la formula o factoriza)',
+    options:['Dom = Todos excepto {-4, 2}','Dom = Todos excepto {4, -2}','Dom = Todos excepto {-2, 4}','Dom = Todos los reales'],
+    answer:0,
+    explanation:'x² + 2x - 8 = 0 → x = (-2 ± √36)/2 = (-2 ± 6)/2 → x = 2 o x = -4. Dom = Todos excepto {-4, 2}.'
   }
 ];
 
-// ==================== CONTINUÏTAT QUIZ ====================
+// ================ CONTINUIDAD QUIZ ================
 const contQ = [
   {
     type:'mc',
-    text:'Quin tipus de discontinuïtat hi ha quan la gràfica fa un "salt" entre dos valors finits?',
-    options:['Discontinuïtat evitable','Discontinuïtat de salt infinit','Discontinuïtat de salt finit','No és una discontinuïtat'],
+    text:'Que tipo de discontinuidad hay cuando la grafica hace un "salto" entre dos alturas diferentes?',
+    options:['Evitable','Salto infinito','Salto finito','No es discontinuidad'],
     answer:2,
-    explanation:'Quan la funció "salta" d\'un valor a un altre (ambdós finits), és una discontinuïtat de salt finit.'
+    explanation:'Cuando la funcion "salta" de un valor a otro (ambos son numeros normales, no infinito), es una discontinuidad de salto finito.'
   },
   {
     type:'mc',
-    text:'La gràfica d\'una funció té un "forat" (cercle obert) en un punt, però la corba es podria unir perfectament si omplíssim el forat. Quin tipus de discontinuïtat és?',
-    options:['Salt finit','Salt infinit','Evitable','Contínua'],
+    text:'La grafica tiene un "agujerito" (circulo abierto) pero la curva pasa suavemente si rellenamos el hueco. Que tipo de discontinuidad es?',
+    options:['Salto finito','Salto infinito','Evitable','Es continua'],
     answer:2,
-    explanation:'Si es pot "tapar" el forat redefinint la funció en aquell punt, la discontinuïtat és evitable.'
+    explanation:'Si puedes "tapar" el agujero redefiniendo la funcion en ese punto, la discontinuidad es evitable. Es como rellenar un bache en la carretera.'
   },
   {
     type:'mc',
-    text:'En x = a, la gràfica se\'n va cap a +∞ per un costat. Quin tipus de discontinuïtat és?',
-    options:['Evitable','Salt finit','Salt infinit (asimptòtic)','Cap, és contínua'],
+    text:'En x = a, la grafica se dispara hacia +∞. Que tipo de discontinuidad es?',
+    options:['Evitable','Salto finito','Salto infinito (asintota vertical)','No es discontinuidad'],
     answer:2,
-    explanation:'Quan la funció se\'n va a infinit, és una discontinuïtat de salt infinit. Hi ha una asímptota vertical en x = a.'
+    explanation:'Cuando la funcion se va al infinito, es un salto infinito. Hay una asintota vertical en x = a (una linea invisible que la funcion nunca cruza).'
   },
   {
     type:'mc',
-    text:'La funció <span class="fn">f(x) = 1/(x² + 2x − 8)</span> té discontinuïtats en x = 2 i x = −4. De quin tipus són?',
-    hint:'Pensa: el denominador s\'anul·la i la funció es dispara...',
-    options:['Evitables','Salt finit','Salt infinit','Una de cada'],
+    text:'La funcion <span class="fn">f(x) = 1/(x² + 2x - 8)</span> tiene discontinuidades en x = 2 y x = -4. De que tipo son?',
+    hint:'El denominador se anula y la funcion se "dispara"...',
+    options:['Evitables','Salto finito','Salto infinito (asintotas verticales)','Una de cada'],
     answer:2,
-    explanation:'Quan el denominador s\'anul·la en una funció racional (i el numerador no), la funció se\'n va a ±∞. Són discontinuïtats de salt infinit (asimptòtiques).'
+    explanation:'Cuando el denominador de una fraccion se hace cero (y el numerador no), la funcion se dispara a ±∞. Son discontinuidades de salto infinito = asintotas verticales.'
   },
   {
     type:'mc',
-    text:'Una funció és contínua a ℝ excepte en x = −8 (disc. evitable), x = −4 (disc. salt infinit) i x = −2 (disc. salt finit). Quantes discontinuïtats té?',
+    text:'Un polinomio como <span class="fn">f(x) = 2x³ - 5x + 1</span> es:',
+    options:['Continuo en todos los reales','Continuo solo en (0, +∞)','Tiene discontinuidad en x=0','Depende del grado del polinomio'],
+    answer:0,
+    explanation:'TODOS los polinomios son continuos en todos los reales. Nunca tienen discontinuidades. Es una de las reglas mas faciles de recordar!'
+  },
+  {
+    type:'mc',
+    text:'f(x) = √x es continua en su dominio [0, +∞). Pero es continua en TODOS los reales?',
+    options:['Si, es continua en todos los reales','No, porque no existe para x < 0','No, tiene una discontinuidad en x = 0','Si, porque √0 = 0'],
+    answer:1,
+    explanation:'√x no existe para x negativos. No podemos decir que sea continua en todos los reales porque no esta definida ahi. Pero SI es continua en su dominio [0, +∞).'
+  },
+  {
+    type:'mc',
+    text:'Si una funcion tiene una asintota vertical en x = 5, que pasa en x = 5?',
+    options:['La funcion vale 0','La funcion es continua','Hay una discontinuidad de salto infinito','Hay una discontinuidad evitable'],
+    answer:2,
+    explanation:'Una asintota vertical significa que la funcion se va a ±∞ en ese punto. Es una discontinuidad de salto infinito.'
+  },
+  {
+    type:'mc',
+    text:'Cuantas discontinuidades tiene una funcion que es continua en todos los reales excepto en x = -8, x = -4 y x = -2?',
     options:['1','2','3','4'],
     answer:2,
-    explanation:'Té exactament 3 discontinuïtats: una de cada tipus.'
+    explanation:'Tiene exactamente 3 discontinuidades: una en cada punto donde deja de ser continua.'
   },
   {
     type:'mc',
-    text:'Un polinomi com <span class="fn">f(x) = 2x³ − 5x + 1</span> és:',
-    options:['Continu a ℝ','Continu només a (0, +∞)','Té discontinuïtat en x=0','Depèn del grau'],
-    answer:0,
-    explanation:'Tots els polinomis són continus a tot ℝ. Mai tenen discontinuïtats!'
-  },
-  {
-    type:'mc',
-    text:'La funció <span class="fn">f(x) = √x</span> és contínua en el seu domini [0, +∞). Però, és contínua a tot ℝ?',
-    options:['Sí, és contínua a ℝ','No, perquè no existeix per x < 0','No, té una discontinuïtat en x=0','Sí, perquè √0 = 0'],
-    answer:1,
-    explanation:'f(x) = √x no existeix per x < 0 (no està definida), així que no podem dir que sigui contínua a tot ℝ. Però sí que és contínua en el seu domini [0, +∞).'
-  },
-  {
-    type:'mc',
-    text:'Si una funció té una asímptota vertical en x = 5, què passa en x = 5?',
-    options:['La funció val 0','La funció és contínua','Hi ha una discontinuïtat de salt infinit','Hi ha una discontinuïtat evitable'],
+    text:'En x = a, los limites laterales de la funcion son iguales, pero la funcion no esta definida en x = a. Que tipo de discontinuidad es?',
+    hint:'Si los limites coinciden, la curva "casi" se une... solo falta el punto',
+    options:['Salto finito','Salto infinito','Evitable','No es discontinuidad'],
     answer:2,
-    explanation:'Una asímptota vertical indica que la funció se\'n va a ±∞ en aquell punt. És una discontinuïtat de salt infinit.'
+    explanation:'Si ambos limites laterales coinciden pero la funcion no esta definida ahi, es una discontinuidad evitable: solo falta "poner" el punto para que sea continua.'
+  },
+  {
+    type:'mc',
+    text:'Cual de estas funciones es SEGURO continua en todos los reales?',
+    options:['f(x) = 1/x','f(x) = √x','f(x) = 5x⁴ - 3x² + 7','f(x) = 1/(x²-1)'],
+    answer:2,
+    explanation:'f(x) = 5x⁴ - 3x² + 7 es un polinomio, y los polinomios son SIEMPRE continuos en todos los reales. Las demas tienen restricciones.'
   }
 ];
 
-// ==================== MONOTONIA QUIZ ====================
+// ================ MONOTONIA QUIZ ================
 const monoQ = [
   {
     type:'mc',
-    text:'Una funció <strong>creix</strong> en un interval quan:',
-    options:[
-      'Si x₁ < x₂, llavors f(x₁) < f(x₂)',
-      'Si x₁ < x₂, llavors f(x₁) > f(x₂)',
-      'Si x₁ < x₂, llavors f(x₁) = f(x₂)',
-      'La gràfica baixa d\'esquerra a dreta'
-    ],
+    text:'Una funcion <strong>crece</strong> en un intervalo cuando:',
+    options:['Al ir hacia la derecha, la grafica SUBE','Al ir hacia la derecha, la grafica BAJA','La grafica es horizontal','La grafica salta'],
     answer:0,
-    explanation:'Créixer vol dir que quan x augmenta, f(x) també augmenta: x₁ < x₂ → f(x₁) < f(x₂).'
+    explanation:'Crecer = subir. Si caminas de izquierda a derecha y la grafica sube, la funcion esta creciendo.'
   },
   {
     type:'mc',
-    text:'En un punt <strong>màxim</strong>, la funció:',
-    options:[
-      'Passa de decréixer a créixer',
-      'Passa de créixer a decréixer',
-      'Sempre creix',
-      'Sempre decreix'
-    ],
+    text:'En un punto <strong>maximo</strong>, la funcion:',
+    options:['Pasa de decrecer a crecer','Pasa de crecer a decrecer','Siempre crece','Siempre decrece'],
     answer:1,
-    explanation:'En un màxim, la funció primer puja (creix) i després baixa (decreix). És el cim d\'un turó!'
+    explanation:'Un maximo es la cima de una montaña: primero subes (crece) y luego bajas (decrece). Crece → Decrece.'
   },
   {
     type:'mc',
-    text:'En un punt <strong>mínim</strong>, la funció:',
-    options:[
-      'Passa de créixer a decréixer',
-      'Sempre creix',
-      'Passa de decréixer a créixer',
-      'És contínua'
-    ],
+    text:'En un punto <strong>minimo</strong>, la funcion:',
+    options:['Pasa de crecer a decrecer','Siempre crece','Pasa de decrecer a crecer','Es constante'],
     answer:2,
-    explanation:'En un mínim, la funció primer baixa (decreix) i després puja (creix). És el fons d\'una vall!'
+    explanation:'Un minimo es el fondo de un valle: primero bajas (decrece) y luego subes (crece). Decrece → Crece.'
   },
   {
     type:'mc',
-    text:'La funció <span class="fn">f(x) = x²</span> (una paràbola oberta cap amunt) té un punt mínim en x = 0. En quins intervals creix i decreix?',
-    options:[
-      'Decreix en (−∞, 0) i creix en (0, +∞)',
-      'Creix en (−∞, 0) i decreix en (0, +∞)',
-      'Creix en tot ℝ',
-      'Decreix en tot ℝ'
-    ],
+    text:'f(x) = x² (parabola boca arriba) tiene un minimo en x = 0. En que intervalos crece y decrece?',
+    options:['Decrece en (-∞, 0) y crece en (0, +∞)','Crece en (-∞, 0) y decrece en (0, +∞)','Crece en todo','Decrece en todo'],
     answer:0,
-    explanation:'La paràbola x² baixa fins al vèrtex (0,0) i després puja. Decreix a l\'esquerra de 0, creix a la dreta.'
+    explanation:'La parabola x² baja hasta el vertice (0,0) y luego sube. Decrece a la izquierda de 0, crece a la derecha.'
   },
   {
     type:'mc',
-    text:'Si el recorregut d\'una funció és Rec f(x) = [−2, 5], quins valors pot prendre y?',
-    options:[
-      'Tots els reals',
-      'Només −2 i 5',
-      'Tots els valors entre −2 i 5 (inclosos)',
-      'Només valors positius'
-    ],
+    text:'Si el recorrido de una funcion es Rec = [-2, 5], que valores puede tomar y?',
+    options:['Solo -2 y 5','Todos los reales','Todos los valores entre -2 y 5 (incluidos)','Solo valores positivos'],
     answer:2,
-    explanation:'El recorregut [−2, 5] vol dir que y pren tots els valors des de −2 fins a 5, ambdós inclosos.'
+    explanation:'El recorrido [-2, 5] significa que y puede ser cualquier numero desde -2 hasta 5, ambos incluidos (corchetes).'
   },
   {
     type:'mc',
-    text:'Quins són els punts de tall amb l\'eix X de <span class="fn">f(x) = x² − 4</span>?',
-    hint:'Fes f(x) = 0 i resol.',
-    options:[
-      '(0, −4)',
-      '(2, 0) i (−2, 0)',
-      '(4, 0)',
-      '(0, 2) i (0, −2)'
-    ],
+    text:'Cuales son los cortes con el eje X de <span class="fn">f(x) = x² - 4</span>?',
+    hint:'Haz f(x) = 0 y resuelve',
+    options:['(0, -4)','(2, 0) y (-2, 0)','(4, 0)','(0, 2) y (0, -2)'],
     answer:1,
-    explanation:'x² − 4 = 0 → x² = 4 → x = ±2. Els punts de tall amb l\'eix X són (2, 0) i (−2, 0).'
+    explanation:'x² - 4 = 0 → x² = 4 → x = ±2. Los cortes con el eje X son (2, 0) y (-2, 0). Recuerda: en el eje X siempre y = 0.'
   },
   {
     type:'mc',
-    text:'Quin és el punt de tall amb l\'eix Y de <span class="fn">f(x) = 3x² + 2x − 7</span>?',
-    hint:'Calcula f(0).',
-    options:['(0, −7)','(0, 7)','(−7, 0)','(0, 3)'],
+    text:'Cual es el corte con el eje Y de <span class="fn">f(x) = 3x² + 2x - 7</span>?',
+    hint:'Calcula f(0)',
+    options:['(0, -7)','(0, 7)','(-7, 0)','(0, 3)'],
     answer:0,
-    explanation:'f(0) = 3(0)² + 2(0) − 7 = −7. El punt de tall amb l\'eix Y és (0, −7).'
+    explanation:'f(0) = 3(0)² + 2(0) - 7 = -7. El corte con el eje Y es (0, -7). Para el eje Y siempre sustituyes x = 0.'
   },
   {
     type:'mc',
-    text:'Una funció <strong>constant</strong> (f(x) = k) en un interval:',
-    options:['Creix','Decreix','Ni creix ni decreix','Depèn del valor de k'],
+    text:'Una funcion <strong>constante</strong> (f(x) = k) en un intervalo:',
+    options:['Crece','Decrece','Ni crece ni decrece','Depende del valor de k'],
     answer:2,
-    explanation:'Una funció constant no creix ni decreix: si x₁ < x₂, llavors f(x₁) = f(x₂). La gràfica és una línia horitzontal.'
+    explanation:'Una funcion constante es una linea horizontal. No sube ni baja, asi que ni crece ni decrece.'
+  },
+  {
+    type:'mc',
+    text:'La funcion f(x) = x³ (cubica) crece en todo su dominio. Cuantos maximos y minimos tiene?',
+    options:['1 maximo','1 minimo','Ninguno','Infinitos'],
+    answer:2,
+    explanation:'Si una funcion SIEMPRE crece (o SIEMPRE decrece), no tiene ningun maximo ni minimo. Para tener un extremo necesita cambiar de subir a bajar o viceversa.'
+  },
+  {
+    type:'mc',
+    text:'Una funcion crece en (-∞, -1), decrece en (-1, 3) y crece en (3, +∞). Cuantos extremos tiene y cuales son?',
+    options:['1 maximo en x=-1','1 minimo en x=3','1 maximo en x=-1 y 1 minimo en x=3','1 minimo en x=-1 y 1 maximo en x=3'],
+    answer:2,
+    explanation:'En x=-1: crece→decrece = MAXIMO. En x=3: decrece→crece = MINIMO. Son 2 extremos en total.'
+  },
+  {
+    type:'mc',
+    text:'Si una funcion talla el eje Y en (0, 5) y el eje X en (-1, 0) y (3, 0), cuanto vale f(0)?',
+    options:['f(0) = 0','f(0) = 5','f(0) = -1','f(0) = 3'],
+    answer:1,
+    explanation:'El corte con el eje Y es el punto donde x = 0, es decir (0, 5). Por tanto f(0) = 5.'
+  },
+  {
+    type:'mc',
+    text:'f(x) = -x² (parabola boca abajo) tiene:',
+    options:['Un minimo en (0, 0)','Un maximo en (0, 0)','Ni maximo ni minimo','Un maximo en (0, 0) y recorrido (-∞, 0]'],
+    answer:3,
+    explanation:'f(x) = -x² tiene el vertice en (0,0) que es un MAXIMO (boca abajo = la cima esta arriba). El recorrido es (-∞, 0] porque y nunca supera 0.'
   }
 ];
 
-// ==================== ANÀLISI QUIZ ====================
-const analisiQ = [
+// ================ ANALISIS QUIZ ================
+const analisisQ = [
   {
     type:'mc',
-    text:'Tenim una funció amb gràfica que va de (−∞, −8) fins a (+∞), amb discontinuïtats en x=−8, x=−4 i x=−2, i talla l\'eix X en (−10,0) i (7,0) i l\'eix Y en (0,3). Quin és el seu recorregut?',
-    options:[
-      'Rec = [−10, 7]',
-      'Rec = ℝ = (−∞, +∞)',
-      'Rec = (−∞, 3]',
-      'Rec = [0, +∞)'
-    ],
+    text:'Una funcion tiene grafica que va de (-∞, -8) hasta (+∞), con discontinuidades en x=-8, x=-4 y x=-2, y corta el eje X en (-10,0) y (7,0) y el eje Y en (0,3). Cual es su recorrido?',
+    hint:'Si la grafica cubre todas las alturas posibles (de -∞ a +∞)...',
+    options:['Rec = [-10, 7]','Rec = Todos los reales = (-∞, +∞)','Rec = (-∞, 3]','Rec = [0, +∞)'],
     answer:1,
-    explanation:'Si la gràfica cobreix tots els valors de y (de −∞ a +∞), el recorregut és ℝ.'
+    explanation:'Si la grafica alcanza todos los valores de y posibles (desde -∞ hasta +∞), el recorrido es todos los reales.'
   },
   {
     type:'mc',
-    text:'El domini d\'una funció és Dom = (−∞, −8) ∪ (−8, −4] ∪ (−4, −2) ∪ (−2, +∞). Quants punts de discontinuïtat hi ha?',
+    text:'El dominio de una funcion es Dom = (-∞, -8) ∪ (-8, -4] ∪ (-4, -2) ∪ (-2, +∞). Cuantos puntos de discontinuidad hay?',
     options:['1','2','3','4'],
     answer:2,
-    explanation:'Hi ha 3 punts exclosos o amb canvi: x=−8, x=−4 i x=−2. Cadascun genera una discontinuïtat.'
+    explanation:'Hay 3 "huecos" en el dominio: x=-8, x=-4 y x=-2. Cada uno genera una discontinuidad.'
   },
   {
     type:'mc',
-    text:'Si una funció creix en (−∞, 2) i decreix en (2, +∞), què té en x = 2?',
-    options:['Un mínim','Un màxim','Un punt d\'inflexió','Una discontinuïtat'],
+    text:'Si una funcion crece en (-∞, 2) y decrece en (2, +∞), que hay en x = 2?',
+    options:['Un minimo','Un maximo','Un punto de inflexion','Una discontinuidad'],
     answer:1,
-    explanation:'Creix abans de x=2 i decreix després → és un màxim (cim del turó).'
+    explanation:'Crece antes de x=2 y decrece despues → es un MAXIMO (cima de la montaña).'
   },
   {
     type:'mc',
-    text:'Si una funció decreix en (−3, 1) i creix en (1, 5), què té en x = 1?',
-    options:['Un màxim','Un mínim','Un punt d\'inflexió','Res especial'],
+    text:'Si una funcion decrece en (-3, 1) y crece en (1, 5), que hay en x = 1?',
+    options:['Un maximo','Un minimo','Un punto de inflexion','Nada especial'],
     answer:1,
-    explanation:'Decreix abans de x=1 i creix després → és un mínim (fons de la vall).'
+    explanation:'Decrece antes de x=1 y crece despues → es un MINIMO (fondo del valle).'
   },
   {
     type:'mc',
-    text:'Analitza: <span class="fn">f(x) = 1/(x−3)</span>. Quina afirmació és correcta?',
-    options:[
-      'Dom = ℝ, contínua a ℝ',
-      'Dom = ℝ−{3}, disc. evitable en x=3',
-      'Dom = ℝ−{3}, disc. salt infinit en x=3',
-      'Dom = (3, +∞), contínua'
-    ],
+    text:'Analiza: <span class="fn">f(x) = 1/(x-3)</span>. Cual de estas afirmaciones es correcta?',
+    options:['Dom = Todos los reales, continua','Dom = Todos excepto {3}, discontinuidad evitable en x=3','Dom = Todos excepto {3}, salto infinito en x=3','Dom = (3, +∞), continua'],
     answer:2,
-    explanation:'El denominador s\'anul·la en x=3 (Dom = ℝ−{3}). La funció se\'n va a ±∞ en x=3, per tant és una discontinuïtat de salt infinit.'
+    explanation:'El denominador se anula en x=3 → Dom = (-∞,3) ∪ (3,+∞). La funcion se dispara a ±∞ en x=3, asi que es una discontinuidad de salto infinito (asintota vertical).'
   },
   {
     type:'mc',
-    text:'Si el recorregut d\'una funció és Rec = (−∞, −3) ∪ [4, +∞), quins valors de y <strong>NO</strong> pren la funció?',
-    options:[
-      'y = −3 i y = 4',
-      'y = −3 i tots els valors entre −3 i 4 (sense incloure −3 ni 4)',
-      'y = −3 i tots els valors de −3 a 4 (incloent 4)',
-      'Tots els valors de [−3, 4)'
-    ],
+    text:'Si el recorrido de una funcion es Rec = (-∞, -3) ∪ [4, +∞), que valores de y NO toma la funcion?',
+    options:['y = -3 y y = 4','Todos los valores de -3 a 4 (sin incluir -3 ni 4... bueno, -3 no se incluye pero 4 si)','y = -3 y todos los de -3 a 4 sin incluir 4','Todos los valores de [-3, 4)'],
     answer:3,
-    explanation:'La funció no pren valors en [−3, 4): no arriba a −3 (parèntesi) ni a cap valor entre −3 i 4. Sí que arriba a 4 (claudàtor).'
+    explanation:'La funcion no toma valores en [-3, 4): no llega a -3 (parentesis) ni a ningun valor entre -3 y 4. Si llega a 4 (corchete).'
   },
   {
     type:'mc',
-    text:'La funció <span class="fn">f(x) = −x²</span> (paràbola cap avall) té:',
-    options:[
-      'Un mínim en (0, 0)',
-      'Un màxim en (0, 0)',
-      'Ni màxim ni mínim',
-      'Un màxim en (0, 0) i recorregut (−∞, 0]'
-    ],
-    answer:3,
-    explanation:'f(x) = −x² té el vèrtex en (0,0) que és un màxim (la paràbola va cap avall). El recorregut és (−∞, 0] perquè y mai supera 0.'
-  },
-  {
-    type:'mc',
-    text:'Si una funció talla l\'eix Y en (0, 5) i l\'eix X en (−1, 0) i (3, 0), quant val f(0)?',
-    options:['f(0) = 0','f(0) = 5','f(0) = −1','f(0) = 3'],
+    text:'f(x) = -x² tiene: maximo en (0,0), crece en (-∞, 0), decrece en (0, +∞). Cual es su recorrido?',
+    options:['[0, +∞)','(-∞, 0]','(-∞, +∞)','(-∞, 0)'],
     answer:1,
-    explanation:'El tall amb l\'eix Y és el punt on x=0, és a dir (0, 5). Per tant f(0) = 5.'
+    explanation:'La parabola boca abajo tiene su punto mas alto en y=0 y baja infinitamente. Llega a y=0 (incluido) pero nunca lo supera. Rec = (-∞, 0].'
+  },
+  {
+    type:'mc',
+    text:'Cual es el punto de corte con el eje Y de <span class="fn">f(x) = 2/(x+1)</span>?',
+    options:['(0, 2)','(0, 1)','(0, -1)','No existe'],
+    answer:0,
+    explanation:'f(0) = 2/(0+1) = 2/1 = 2. El corte con el eje Y es (0, 2).'
+  },
+  {
+    type:'mc',
+    text:'La funcion |x| (valor absoluto) en x = 0:',
+    options:['Tiene un maximo','Tiene un minimo','Tiene una discontinuidad','Ni crece ni decrece'],
+    answer:1,
+    explanation:'|x| decrece para x < 0 y crece para x > 0. En x=0 tiene un MINIMO (el punto mas bajo, f(0) = 0).'
+  },
+  {
+    type:'mc',
+    text:'Cual es la diferencia entre un intervalo abierto (a, b) y uno cerrado [a, b]?',
+    options:['El abierto incluye a y b, el cerrado no','El cerrado incluye a y b, el abierto no','No hay diferencia','El abierto es infinito, el cerrado es finito'],
+    answer:1,
+    explanation:'[a, b] cerrado: incluye a y b (con los extremos). (a, b) abierto: NO incluye ni a ni b. Corchete = incluido, parentesis = excluido.'
   }
 ];
 
-// ==================== EXAMEN SIMULAT ====================
+// ================ EXAMEN SIMULADO ================
 const examenQ = [
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = √(5 − x)</span>?',
-    options:['Dom = [5, +∞)','Dom = (−∞, 5]','Dom = (−∞, 5)','Dom = ℝ'],
+    text:'Cual es el dominio de <span class="fn">f(x) = √(5 - x)</span>?',
+    options:['Dom = [5, +∞)','Dom = (-∞, 5]','Dom = (-∞, 5)','Dom = Todos los reales'],
     answer:1,
-    explanation:'5 − x ≥ 0 → x �j$ 5. Com x=5 sí que hi pertany (√0 = 0), Dom = (−∞, 5].'
+    explanation:'5 - x ≥ 0 → x ≤ 5. Como x = 5 vale (√0 = 0), incluimos: Dom = (-∞, 5].'
   },
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = 3/(x² − 9)</span>?',
-    options:['Dom = ℝ − {9}','Dom = ℝ − {3}','Dom = ℝ − {−3, 3}','Dom = ℝ'],
+    text:'Cual es el dominio de <span class="fn">f(x) = 3/(x² - 9)</span>?',
+    options:['Dom = Todos excepto {9}','Dom = Todos excepto {3}','Dom = Todos excepto {-3, 3}','Dom = Todos los reales'],
     answer:2,
-    explanation:'x² − 9 = 0 → x² = 9 → x = ±3. Dom = ℝ − {−3, 3}.'
+    explanation:'x² - 9 = 0 → x² = 9 → x = ±3. Prohibidos x = 3 y x = -3. Dom = Todos excepto {-3, 3}.'
   },
   {
     type:'mc',
-    text:'Una funció contínua <span class="fn">f</span> creix en (−∞, −1), decreix en (−1, 3) i creix en (3, +∞). Quants extrems té i quins?',
-    options:[
-      '1 màxim en x=−1',
-      '1 mínim en x=3',
-      '1 màxim en x=−1 i 1 mínim en x=3',
-      '1 mínim en x=−1 i 1 màxim en x=3'
-    ],
+    text:'Una funcion continua crece en (-∞, -1), decrece en (-1, 3) y crece en (3, +∞). Cuantos extremos tiene?',
+    options:['1 maximo en x=-1','1 minimo en x=3','1 maximo en x=-1 y 1 minimo en x=3','1 minimo en x=-1 y 1 maximo en x=3'],
     answer:2,
-    explanation:'En x=−1: creix→decreix = MÁ�IM. En x=3: decreix→creix = MÍNIM.'
+    explanation:'En x=-1: crece→decrece = MAXIMO. En x=3: decrece→crece = MINIMO. Son 2 extremos.'
   },
   {
     type:'mc',
-    text:'La funció <span class="fn">f(x) = x³</span> (cúbica) creix a tot ℝ. Quants extrems (màxims/mínims) té?',
-    options:['1 màxim','1 mínim','Cap extrem','Infinits extrems'],
+    text:'f(x) = x³ (cubica) crece en todo su dominio. Cuantos maximos/minimos tiene?',
+    options:['1 maximo','1 minimo','Ningun extremo','Infinitos'],
     answer:2,
-    explanation:'Si la funció sempre creix (o sempre decreix), no té cap màxim ni mínim.'
+    explanation:'Si SIEMPRE crece, nunca cambia de direccion, asi que no tiene ni maximos ni minimos.'
   },
   {
     type:'mc',
-    text:'Una funció racional <span class="fn">f(x) = (x+2)/(x²−4)</span>. Sabent que x²−4 = (x−2)(x+2), quin és el domini?',
-    hint:'Simplifica primer mentalment...',
-    options:[
-      'Dom = ℝ − {2, −2}',
-      'Dom = ℝ − {2}',
-      'Dom = ℝ − {−2}',
-      'Dom = ℝ'
-    ],
+    text:'f(x) = (x+2)/(x²-4). Sabiendo que x²-4 = (x-2)(x+2), cual es el dominio?',
+    hint:'Aunque (x+2) se simplifica, el dominio se calcula ANTES de simplificar',
+    options:['Dom = Todos excepto {2, -2}','Dom = Todos excepto {2}','Dom = Todos excepto {-2}','Dom = Todos los reales'],
     answer:0,
-    explanation:'El denominador (x−2)(x+2) s\'anul·la en x=2 i x=−2. El domini és ℝ − {−2, 2}. Nota: tot i que el factor (x+2) se simplifica, el domini manté l\'exclusió!'
+    explanation:'El denominador (x-2)(x+2) se anula en x=2 y x=-2. Ambos se excluyen del dominio, AUNQUE el factor (x+2) se simplifique con el numerador.'
   },
   {
     type:'mc',
-    text:'Si el recorregut d\'una funció és Rec = [0, +∞), la funció pot prendre valors negatius?',
-    options:['Sí','No','Només en els extrems','Depèn del domini'],
+    text:'Si el recorrido de una funcion es Rec = [0, +∞), la funcion puede tomar valores negativos?',
+    options:['Si','No','Solo en los extremos','Depende del dominio'],
     answer:1,
-    explanation:'El recorregut [0, +∞) vol dir que y ≥ 0 sempre. La funció mai pren valors negatius.'
+    explanation:'Rec = [0, +∞) significa y ≥ 0 siempre. La funcion NUNCA toma valores negativos.'
   },
   {
     type:'mc',
-    text:'Identifica: en x=a la funció té límits laterals iguals però la funció no està definida en x=a. Quin tipus de discontinuïtat és?',
-    options:['Salt finit','Salt infinit','Evitable','No és discontinuïtat'],
+    text:'En x = a la funcion tiene limites laterales iguales pero no esta definida ahi. Que tipo de discontinuidad es?',
+    options:['Salto finito','Salto infinito','Evitable','No es discontinuidad'],
     answer:2,
-    explanation:'Si els dos límits laterals coincideixen (el límit existeix) però la funció no hi està definida, la discontinuïtat és evitable: es podria definir f(a) = límit.'
+    explanation:'Si los dos limites coinciden pero la funcion no esta definida, es evitable: bastaria con definir f(a) = limite para "arreglarla".'
   },
   {
     type:'mc',
-    text:'Quin és el punt de tall amb l\'eix Y de <span class="fn">f(x) = 2/(x+1)</span>?',
-    options:['(0, 2)','(0, 1)','(0, −1)','No existeix'],
+    text:'Cual es el corte con el eje Y de <span class="fn">f(x) = 2/(x+1)</span>?',
+    options:['(0, 2)','(0, 1)','(0, -1)','No existe'],
     answer:0,
-    explanation:'f(0) = 2/(0+1) = 2/1 = 2. El punt de tall amb l\'eix Y és (0, 2).'
+    explanation:'f(0) = 2/(0+1) = 2. El corte con Y es (0, 2).'
   },
   {
     type:'mc',
-    text:'La funció <span class="fn">f(x) = |x|</span> (valor absolut) en x=0:',
-    options:[
-      'Té un màxim',
-      'Té un mínim',
-      'Té una discontinuïtat',
-      'Ni creix ni decreix'
-    ],
+    text:'f(x) = |x| en x = 0:',
+    options:['Tiene un maximo','Tiene un minimo','Tiene una discontinuidad','Ni crece ni decrece'],
     answer:1,
-    explanation:'|x| decreix per x < 0 i creix per x > 0. En x=0 té un mínim (el punt més baix, f(0)=0).'
+    explanation:'|x| baja hasta x=0 y luego sube → minimo en (0, 0).'
   },
   {
     type:'mc',
-    text:'Quina és la diferència clau entre un interval <strong>obert</strong> (a, b) i un <strong>tancat</strong> [a, b]?',
-    options:[
-      'L\'obert inclou els extrems, el tancat no',
-      'El tancat inclou els extrems, l\'obert no',
-      'No hi ha diferència',
-      'L\'obert és infinit, el tancat és finit'
-    ],
+    text:'La diferencia entre (a, b) y [a, b] es:',
+    options:['(a,b) incluye los extremos, [a,b] no','[a,b] incluye los extremos, (a,b) no','No hay diferencia','(a,b) es mas grande que [a,b]'],
     answer:1,
-    explanation:'[a, b] tancat inclou a i b. (a, b) obert NO inclou a ni b. Recorda: claudàtor = inclòs, parèntesi = exclòs.'
+    explanation:'Corchete [ ] = incluido (cerrado). Parentesis ( ) = excluido (abierto). [a,b] incluye a y b, (a,b) no los incluye.'
   },
   {
     type:'mc',
-    text:'Quin és el domini de <span class="fn">f(x) = √(x² − 1)</span>?',
-    hint:'Resol x² − 1 ≥ 0.',
-    options:[
-      'Dom = [−1, 1]',
-      'Dom = (−∞, −1] ∪ [1, +∞)',
-      'Dom = (−1, 1)',
-      'Dom = ℝ'
-    ],
+    text:'Cual es el dominio de <span class="fn">f(x) = √(x² - 1)</span>?',
+    hint:'Resuelve x² - 1 ≥ 0 → x² ≥ 1',
+    options:['Dom = [-1, 1]','Dom = (-∞, -1] ∪ [1, +∞)','Dom = (-1, 1)','Dom = Todos los reales'],
     answer:1,
-    explanation:'x² − 1 ≥ 0 → x² ≥ 1 → |x| ≥ 1 → x �j$ −1 o x ≥ 1. Dom = (−∞, −1] ∪ [1, +∞).'
+    explanation:'x² - 1 ≥ 0 → x² ≥ 1 → |x| ≥ 1 → x ≤ -1 o x ≥ 1. Dom = (-∞, -1] ∪ [1, +∞).'
   },
   {
     type:'mc',
-    text:'Una funció té Dom = ℝ, Rec = (−∞, 4), creix en (−∞, 2) i decreix en (2, +∞). Quin és el valor màxim que s\'acosta a assolir?',
-    options:['y = 2','y = 4','y = +∞','No s\'acosta a cap valor'],
+    text:'Una funcion tiene Dom = todos los reales, Rec = (-∞, 4), crece en (-∞, 2) y decrece en (2, +∞). Cual es el valor maximo que casi alcanza?',
+    options:['y = 2','y = 4','y = +∞','No tiene valor maximo'],
     answer:1,
-    explanation:'El recorregut (−∞, 4) amb parèntesi vol dir que y s\'acosta a 4 però mai hi arriba. El "quasi-màxim" és 4.'
+    explanation:'El recorrido (-∞, 4) con parentesis en 4 significa que y se acerca a 4 pero nunca llega. El "casi-maximo" es 4.'
   }
 ];
 
-// ==================== INITIALIZE ALL QUIZZES ====================
-buildQuiz('quiz-domini', dominiQ);
-buildQuiz('quiz-continuitat', contQ);
+// ================ INITIALIZE ALL ================
+buildQuiz('quiz-dominio', dominioQ);
+buildQuiz('quiz-continuidad', contQ);
 buildQuiz('quiz-monotonia', monoQ);
-buildQuiz('quiz-analisi', analisiQ);
+buildQuiz('quiz-analisis', analisisQ);
 buildQuiz('quiz-examen', examenQ);
 </script>
 </body>
